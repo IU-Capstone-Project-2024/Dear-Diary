@@ -10,51 +10,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.deardairy.ui.theme.BackgroundColor
+import com.example.deardairy.ui.theme.EmotionBox
 import com.example.deardairy.ui.theme.TitleTextStyle
+import com.example.deardairy.ui.theme.TopBar
 
 @Composable
 fun NewEmotionInputScreen() {
     Column(
         modifier = Modifier
+            .background(color = BackgroundColor)
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 21.dp)
+            .padding(bottom = 15.dp)
     ) {
-        // Top bar with a back button and title
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .width(42.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                )
-            }
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "New Emotion",
-                    style = TitleTextStyle,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
+        TopBar(title = "New Emotion")
 
         // EmotionBox with additional elements
         EmotionBox(
             showAdditionalInfo = true,
-            showButton = true
+            showButton = true,
+            textWidth = 169.dp,
+            pictureWidth = 125.dp,
+            pictureHeight = 125.dp,
+            titleSize = 20f,
+            descriptionSize = 15f,
+            additionalInfoText = "Describe what you feel and Diary will tell what emotion it is"
         )
 
 

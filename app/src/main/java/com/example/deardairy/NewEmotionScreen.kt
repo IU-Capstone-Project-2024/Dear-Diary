@@ -17,44 +17,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.BodyTextStyle
 import com.example.deardairy.ui.theme.TitleTextStyle
+import com.example.deardairy.ui.theme.TopBar
+
+//import com.example.deardairy.ui.theme.
 
 @Composable
 fun NewEmotionScreen(onNextClicked: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .background(color = BackgroundColor)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .width(42.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                )
-            }
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicText(
-                    text = "New emotion",
-                    style = TitleTextStyle,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
-                )
-            }
-        }
+        TopBar(title = "New Emotion", showLeftButton = true)
 
 
         Column(
