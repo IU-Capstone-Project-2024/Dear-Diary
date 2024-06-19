@@ -17,11 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.ui.theme.BodyTextStyle
 import com.example.deardairy.ui.theme.TitleTextStyle
 
 @Composable
-fun PrevNoteScreen(onNextClicked: () -> Unit) {
+fun PrevNoteScreen(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -92,7 +94,7 @@ fun PrevNoteScreen(onNextClicked: () -> Unit) {
             }
 
             Button(
-                onClick = onNextClicked,
+                onClick = { },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -115,5 +117,5 @@ fun PrevNoteScreen(onNextClicked: () -> Unit) {
 @Preview
 @Composable
 fun PrevNoteScreenPreview() {
-    PrevNoteScreen(onNextClicked = {})
+    PrevNoteScreen(navController = rememberNavController())
 }

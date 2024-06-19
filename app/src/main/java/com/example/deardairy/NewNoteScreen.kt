@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.ui.theme.BodyTextStyle
 import com.example.deardairy.ui.theme.TitleTextStyle
 
@@ -41,7 +43,7 @@ object TrapezoidShape : Shape {
 }
 
 @Composable
-fun NewNoteScreen(onNextClicked: () -> Unit) {
+fun NewNoteScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -108,7 +110,7 @@ fun NewNoteScreen(onNextClicked: () -> Unit) {
 
                 // Save button
                 Button(
-                    onClick = onNextClicked,
+                    onClick = { },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(Color.Blue)
                 ) {
@@ -135,5 +137,5 @@ fun NewNoteScreen(onNextClicked: () -> Unit) {
 @Preview
 @Composable
 fun NewNoteScreenPreview() {
-    NewNoteScreen(onNextClicked = {})
+    NewNoteScreen(navController = rememberNavController())
 }

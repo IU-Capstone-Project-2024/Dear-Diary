@@ -2,8 +2,13 @@
 
 package com.example.deardairy
 
+import android.content.Intent
+import android.os.Bundle
 import android.text.style.BackgroundColorSpan
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -27,9 +32,8 @@ import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 import com.example.deardairy.ui.theme.*
 import androidx.compose.material3.MaterialTheme
 
-
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(onScreenTap: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -78,6 +82,7 @@ fun LoadingScreen() {
                 .padding(25.dp)
                 .align(Alignment.BottomCenter)
         )
+        Box(modifier = Modifier.fillMaxSize().clickable(onClick = onScreenTap))
     }
 }
 

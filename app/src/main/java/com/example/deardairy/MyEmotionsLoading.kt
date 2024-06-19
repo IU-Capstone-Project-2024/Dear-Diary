@@ -11,77 +11,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.ui.theme.BodyTextStyle
+import com.example.deardairy.ui.theme.DarkBlueColor
+import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TitleTextStyle
+import com.example.deardairy.ui.theme.TopBar
+import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 
 
 @Composable
-fun MyEmotionsLoading(onNextClicked: () -> Unit) {
+fun MyEmotionsLoading(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Top bar with title
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .width(42.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(8.dp))
+        TopBar(title = "My Emotions", showLeftButton = true, navController = navController)
+
+        PrimaryStyledContainer(verticalArrangement = Arrangement.Center){
+            Text(
+                text = "Wait a minute",
+                style = TextStyle(
+                    fontFamily = playfairDisplayFontFamily,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = DarkBlueColor
                 )
-            }
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicText(
-                    text = "My emotions",
-                    style = TitleTextStyle,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
-                )
-            }
+            )
         }
-
-        // Blue container with three texts
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxSize()
-                .padding(16.dp)
-                .background(color = Color(0xFFCCE5FF), shape = RoundedCornerShape(16.dp))
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            BasicText(text = "Wait a minute...")
-//            Column(
-//                modifier = Modifier.fillMaxWidth(),
-//                verticalArrangement = Arrangement.spacedBy(16.dp),
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//
-//            }
-
-        }
-
-
     }
 }
 
 @Preview
 @Composable
 fun MyEmotionsLoadingPreview() {
-    MyEmotionsLoading(onNextClicked = {})
+    MyEmotionsLoading(navController = rememberNavController())
 }

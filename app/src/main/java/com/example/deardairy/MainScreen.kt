@@ -3,6 +3,7 @@ package com.example.deardairy
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,14 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.BlueContainerColor
 import com.example.deardairy.ui.theme.BodyTextStyle
@@ -38,11 +43,17 @@ import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 
-val NotesCounter =  4
+val NotesCounter =  8
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavHostController) {
+    val configuration = LocalConfiguration.current
+    val screenWidthDp = configuration.screenWidthDp.dp
+    val screenHeightDp = configuration.screenHeightDp.dp
+    val emotionsBlockHeight = screenHeightDp / 6.2f
     val scrollState = rememberScrollState()
+    val cardWidth = screenWidthDp/2 - 25.dp - 10.5.dp
+    val cardHeight =  cardWidth * 1.092f
 
     Column(
         modifier = Modifier
@@ -57,27 +68,32 @@ fun MainScreen() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height((112+17).dp) // Height of the horizontal container
+                .height(emotionsBlockHeight)
                 .padding(horizontal = 21.dp)
                 .padding(bottom = 17.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             EmotionBox(
-                modifier = Modifier.width(239.dp),
+                modifier = Modifier
+                    .clickable { navController.navigate("new_emotion_input") }
+                    .width(screenWidthDp/3*2-25.dp- 10.5.dp),
                 showAdditionalInfo = false,
-                showButton = false
+                showButton = false,
+                pictureWidth = emotionsBlockHeight - 30.dp - 12.dp,
+                pictureHeight = emotionsBlockHeight - 30.dp,
+                textWidth = (screenWidthDp/3*2-25.dp- 10.5.dp) - 24.dp - (emotionsBlockHeight - 30.dp - 12.dp)
             )
-
-            Spacer(modifier = Modifier.width(25.dp))
 
             Column(
                 modifier = Modifier
-                    .width(85.dp)
+                    .clickable { navController.navigate("my_emotions") }
+                    .width(screenWidthDp / 3 - 25.dp - 10.5.dp)
                     .fillMaxSize()
-                    .background(color = Color(0xFFCCE5FF), shape = RoundedCornerShape(24.dp))
+                    .background(color = LightBlueContainerColor, shape = RoundedCornerShape(24.dp))
                     .padding(horizontal = 11.dp)
-                    .padding(top = 19.dp),
+                    .padding(top = 19.dp, bottom = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 BasicText(
                     text = "My recent emotions",
@@ -85,15 +101,16 @@ fun MainScreen() {
                         fontFamily = playfairDisplayFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp,
-                        color = DarkBlueColor
-                    )
+                        color = DarkBlueColor,
+                        textAlign = TextAlign.Center
+                    ),
                 )
                 Image(
                     painter = painterResource(id = R.drawable.my_emotions),
                     contentDescription = null,
                     modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp)
+                        .width(emotionsBlockHeight * 0.36f)
+                        .height(emotionsBlockHeight * 0.36f)
                 )
             }
         }
@@ -117,8 +134,9 @@ fun MainScreen() {
                     // new note
                     Column(
                         modifier = Modifier
-                            .width(162.dp)
-                            .height(176.dp)
+                            .clickable { navController.navigate("new_note_screen") }
+                            .width(screenWidthDp / 2 - 25.dp - 10.5.dp)
+                            .height(cardHeight)
                             .background(
                                 color = BlueContainerColor,
                                 shape = RoundedCornerShape(24.dp)
@@ -150,29 +168,31 @@ fun MainScreen() {
                     }
                     if (NotesCounter > 0) {
                         CustomBoxWithTexts(
+                            navController = navController,
                             boxHeight = 60.dp,
                             text1 = "Note name",
                             text2 = "Short Description",
                             text3 = "Date"
                         )
                     }
-                    // Right column
                 }
             }
             if (NotesCounter > 1) {
-                repeat((NotesCounter / 2)-1){
+                repeat(((NotesCounter-1) / 2) ){
                     item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         CustomBoxWithTexts(
+                            navController = navController,
                             boxHeight = 60.dp,
                             text1 = "Note name",
                             text2 = "Short Description",
                             text3 = "Date"
                         )
                         CustomBoxWithTexts(
+                            navController = navController,
                             boxHeight = 60.dp,
                             text1 = "Note name",
                             text2 = "Short Description",
@@ -187,6 +207,7 @@ fun MainScreen() {
                         horizontalArrangement = Arrangement.Start
                     ){
                         CustomBoxWithTexts(
+                            navController = navController,
                             boxHeight = 60.dp,
                             text1 = "Note name",
                             text2 = "Short Description",
@@ -228,5 +249,5 @@ fun MainScreen() {
 @Preview
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    MainScreen(navController = rememberNavController())
 }

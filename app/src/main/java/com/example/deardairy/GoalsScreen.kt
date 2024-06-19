@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 //import androidx.compose.foundation.layout.FlowRowScopeInstance.weight
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,9 +27,31 @@ import com.example.deardairy.ui.theme.DarkBlueColor
 import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+
+
 
 @Composable
-fun SecondScreen(onNextClicked: () -> Unit) {
+fun GoalsScreen(navController: NavHostController) {
+    val selectedChoices = remember { mutableStateListOf<String>() }
+    var isNextButtonEnabled by remember { mutableStateOf(false) }
+
+    fun updateSelectedChoices(choice: String) {
+        if (selectedChoices.contains(choice)) {
+            selectedChoices.remove(choice)
+        } else {
+            selectedChoices.add(choice)
+        }
+        isNextButtonEnabled = selectedChoices.isNotEmpty() // Обновление состояния кнопки "Next"
+    }
+
     Column(
         modifier = Modifier
             .background(color = BackgroundColor)
@@ -39,17 +61,17 @@ fun SecondScreen(onNextClicked: () -> Unit) {
     ) {
         TopBar(title = "Dear Diary", showLeftButton = false)
 
-        PrimaryStyledContainer  {
+        PrimaryStyledContainer(verticalArrangement = Arrangement.Center) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
 //                    .weight(1f)
-                    .padding(bottom = 16.dp),
+//                    .padding(bottom = 16.dp),
 //                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Spacer(modifier = Modifier.height(200.dp))
+                Spacer(modifier = Modifier.height(240.dp))
                 BasicText(
                     text = "What do you hope to do in Dear Diary?",
                     style = TextStyle(
@@ -62,30 +84,54 @@ fun SecondScreen(onNextClicked: () -> Unit) {
                     ),
                     modifier = Modifier
                         .width(195.dp)
-//                        .padding(horizontal = 21.dp)
                         .padding(bottom = 34.75.dp)
-//                        .align(Alignment.CenterHorizontally)
-
                 )
                 Column(
-//                    modifier = Modifier.,
                     verticalArrangement = Arrangement.spacedBy(17.dp)
                 ) {
-                    ChoiceItem(text = "Deal with emotions")
-                    ChoiceItem(text = "Self-reflection")
-                    ChoiceItem(text = "Other")
+                    ChoiceItem(
+                        text = "Deal with emotions",
+                        isSelected = selectedChoices.contains("Deal with emotions"),
+                    ) {
+                        updateSelectedChoices("Deal with emotions")
+                    }
+                    ChoiceItem(
+                        text = "Self-reflection",
+                        isSelected = selectedChoices.contains("Self-reflection")
+                    ) {
+                        updateSelectedChoices("Self-reflection")
+                    }
+                    ChoiceItem(
+                        text = "Other",
+                        isSelected = selectedChoices.contains("Other")
+                    ) {
+                        updateSelectedChoices("Other")
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(200.dp))
             Box {
-                CustomButton(
-                    buttonState = ButtonState(
-                        type = ButtonType.PRIMARY,
-                        text = "Next",
-                        isActive = true,
-                        onClickAction = {}
+                if (isNextButtonEnabled) {
+                    CustomButton(
+                        buttonState = ButtonState(
+                            type = ButtonType.PRIMARY,
+                            text = "Next",
+                            isActive = true,
+                            onClickAction = {
+                                navController.navigate("main_screen")
+                            }
+                        )
                     )
-                )
+                } else {
+                    CustomButton(
+                        buttonState = ButtonState(
+                            type = ButtonType.PRIMARY,
+                            text = "Next",
+                            isActive = false,
+                            onClickAction = {}
+                        )
+                    )
+                }
             }
 
         }
@@ -94,6 +140,6 @@ fun SecondScreen(onNextClicked: () -> Unit) {
 
 @Preview
 @Composable
-fun SecondScreenPreview() {
-    SecondScreen(onNextClicked = {})
+fun GoalsScreenPreview() {
+    GoalsScreen(navController = rememberNavController())
 }
