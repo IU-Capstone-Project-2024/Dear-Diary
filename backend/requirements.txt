@@ -1,4 +1,4 @@
 fastapi[all]
 requests
-dotenv
+python-dotenv
 pydantic
