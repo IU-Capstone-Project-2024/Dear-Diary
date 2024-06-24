@@ -18,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -36,7 +38,12 @@ data class ButtonState(
 )
 
 @Composable
-fun CustomButton(buttonState: ButtonState) {
+fun CustomButton(buttonState: ButtonState,
+                 width: Dp? = null,
+                 height: Dp = 45.dp,
+                 textSize: TextUnit = 20.sp) {
+
+
     // Определяем цвета для разных состояний кнопки
     val backgroundColor = if (buttonState.isActive) {
         when (buttonState.type) {
@@ -71,6 +78,10 @@ fun CustomButton(buttonState: ButtonState) {
     } else {
         null
     }
+    val modifier = if (width != null) {
+        Modifier.width(width).height(height)
+    } else {
+        Modifier.fillMaxWidth().height(height) }
 
     Button(
         onClick = buttonState.onClickAction,
@@ -85,13 +96,9 @@ fun CustomButton(buttonState: ButtonState) {
             bottomStart = CornerSize(5.dp),
             bottomEnd = CornerSize(5.dp)
         ),
-        modifier = Modifier
-            .fillMaxWidth()
-//            .padding(16.dp)
-            .height(45.dp)
-//            .padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
-        Text(text = buttonState.text, style = ButtonTextStyle)
+        Text(text = buttonState.text, style = ButtonTextStyle.copy(fontSize = textSize))
     }
 }
 

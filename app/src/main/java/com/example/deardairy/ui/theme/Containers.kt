@@ -317,11 +317,13 @@ fun TopBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 21.dp)
     ) {
         if (showLeftButton) {
             Row(
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(bottom = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -360,8 +362,9 @@ fun MiniButton(
             painter = painterResource(id = R.drawable.arrow), // ваше изображение
             contentDescription = null,
             modifier = Modifier
-                .size(100.dp)
+                .size(100.dp),
 //                .padding(8.dp)
+            tint = Color.Unspecified
         )
     }
 }
@@ -380,51 +383,51 @@ fun Overlay(
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
-                .background(Color.White, shape = RoundedCornerShape(16.dp))
-                .padding(horizontal = 48.dp, vertical = 24.dp)
-                .fillMaxWidth(0.6f),
+                .width(258.dp)
+                .background(Color.White, shape = RoundedCornerShape(12.dp))
+                .padding(horizontal = 45.dp, vertical = 33.dp)
+                .fillMaxWidth(0.67f),
             horizontalAlignment = Alignment.Start
         ) {
             BasicText(
                 text = title,
                 style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    fontFamily = playfairDisplayFontFamily,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = DarkBlueColor
                 ),
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 18.dp)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(
-                    onClick = onConfirm,
-                    colors = ButtonDefaults.buttonColors(Color.Gray)
-                ) {
-                    BasicText(text = "Yes",style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    )
-                }
-                Button(
-                    onClick = onCancel,
-                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                ) {
-                    BasicText(text = "No",
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    )
-                }
+                CustomButton(buttonState = ButtonState(
+                    type = ButtonType.SECONDARY,
+                    text = "Yes",
+                    isActive = true,
+                    onClickAction = onConfirm,
+                ),
+                    width = 78.dp,
+                    height = 33.dp,
+                    textSize = 14.sp
+                )
+
+                CustomButton(buttonState = ButtonState(
+                    type = ButtonType.PRIMARY,
+                    text = "No",
+                    isActive = true,
+                    onClickAction = onCancel
+                ),
+                    width = 78.dp,
+                    height = 33.dp,
+                    textSize = 14.sp)
             }
         }
     }
 }
+
 
 @Composable
 fun PrevEmotionContainer(
@@ -485,11 +488,11 @@ fun PrimaryStyledContainerPreview() {
 //        ) {
 //            selectedChoice = "Other"
 //        }
-        EmotionBox(
-            showAdditionalInfo = true,
-            showButton = true,
-            textWidth = 107.dp
-        )
+//        EmotionBox(
+//            showAdditionalInfo = true,
+//            showButton = true,
+//            textWidth = 107.dp
+//        )
 //        CustomBoxWithTexts(
 //            boxHeight = 60.dp,
 //            text1 = "Note name",
@@ -499,9 +502,9 @@ fun PrimaryStyledContainerPreview() {
 //        TopBar(title = "Hi")
     }
 
-//    Overlay(
-//        title = "Are you sure?",
-//        onConfirm = {},
-//        onCancel = {}
-//    )
+    Overlay(
+        title = "Are you sure?",
+        onConfirm = {},
+        onCancel = {}
+    )
 }

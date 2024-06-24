@@ -7,6 +7,10 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
@@ -22,8 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.deardairy.ui.theme.BackgroundColor
+import com.example.deardairy.ui.theme.BlueContainerColor
 import com.example.deardairy.ui.theme.BodyTextStyle
+import com.example.deardairy.ui.theme.ButtonState
+import com.example.deardairy.ui.theme.ButtonType
+import com.example.deardairy.ui.theme.CustomButton
+import com.example.deardairy.ui.theme.DarkBlueColor
+import com.example.deardairy.ui.theme.Overlay
+import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TitleTextStyle
+import com.example.deardairy.ui.theme.TopBar
+import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 
 object TrapezoidShape : Shape {
     override fun createOutline(
@@ -44,95 +60,77 @@ object TrapezoidShape : Shape {
 
 @Composable
 fun NewNoteScreen(navController: NavHostController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Top bar with a back button and title
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .width(42.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                )
-            }
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicText(
-                    text = "New Note",
-                    style = TitleTextStyle,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
-                )
-            }
-        }
+    var overlayVisible by remember { mutableStateOf(false) }
 
-        // Light blue container
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .background(color = Color(0xFFCCE5FF), shape = RoundedCornerShape(16.dp))
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Inner blue container with text
-                Box(
+    Column(modifier = Modifier
+        .background(color = BackgroundColor)
+        .fillMaxSize(),
+        verticalArrangement = Arrangement.Top
+    ) {
+        TopBar(title = "New Note", showLeftButton = true, navController = navController)
+//        onClickAction = { overlayVisible = true }
+        PrimaryStyledContainer {
+            Column(verticalArrangement = Arrangement.SpaceBetween){
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .background(color = Color(0xFF7788FF), shape = RoundedCornerShape(16.dp))
+                        .background(color = BlueContainerColor, shape = RoundedCornerShape(12.dp))
                         .padding(16.dp)
                 ) {
-                    Column {
-                        BasicText(text = "Note Title", style = BodyTextStyle, modifier = Modifier.padding(bottom = 8.dp))
-                        BasicText(text = "Note Content", style = BodyTextStyle)
-                    }
-                }
+                    BasicText(text = "Dear Diary,", style = TextStyle(
+                        fontFamily = playfairDisplayFontFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        color = DarkBlueColor
+                    ), modifier = Modifier.padding(bottom = 15.dp))
+                    BasicText(text = "Start writing about how you feel \n" +
+                            "or get any help from Diary", style = TextStyle(
+                        fontFamily = playfairDisplayFontFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        color = BackgroundColor
+                    ), modifier = Modifier.padding(bottom = 5.dp))
 
-                // Save button
-                Button(
-                    onClick = { },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                ) {
-                    BasicText(
+                }
+                Spacer(modifier = Modifier.height(17.dp))
+                CustomButton(
+                    buttonState = ButtonState(
+                        type = ButtonType.PRIMARY,
                         text = "Save my note",
-                        style = BodyTextStyle.copy(color = Color.White)
+                        isActive = true,
+                        onClickAction = {navController.navigate("main_screen")}
                     )
-                }
+                )
             }
-
             // Trapezoid container
             Box(
                 modifier = Modifier
                     .size(170.dp, 70.dp)
-                    .align(Alignment.TopEnd)
+//                    .align(Alignment.TopEnd)
                     .offset(x = (1).dp, y = (48).dp)  // Смещение для визуального выреза
                     .clip(TrapezoidShape)
                     .background(color = Color(0xFFCCE5FF))  // Добавлен красный цвет для визуализации
             )
         }
+
+        if (overlayVisible) {
+            Overlay(
+                title = "Your notes will not be saved.\n" +
+                        "Are you sure?",
+                onConfirm = {
+                    // Perform navigation or action on confirm
+                    navController.navigate("main_screen")
+                    overlayVisible = false // Hide overlay
+                },
+                onCancel = {
+                    overlayVisible = false // Hide overlay on cancel
+                }
+            )
+        }
     }
 }
+
 
 @Preview
 @Composable

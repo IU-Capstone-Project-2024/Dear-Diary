@@ -7,6 +7,10 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,98 +23,85 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.deardairy.ui.theme.BackgroundColor
+import com.example.deardairy.ui.theme.BlueContainerColor
 import com.example.deardairy.ui.theme.BodyTextStyle
+import com.example.deardairy.ui.theme.ButtonState
+import com.example.deardairy.ui.theme.ButtonType
+import com.example.deardairy.ui.theme.CustomButton
+import com.example.deardairy.ui.theme.DarkBlueColor
+import com.example.deardairy.ui.theme.Overlay
+import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TitleTextStyle
+import com.example.deardairy.ui.theme.TopBar
+import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 
 @Composable
 fun PrevNoteScreen(navController: NavHostController) {
+    var overlayVisible by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .background(color = BackgroundColor)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Top
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .width(42.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(8.dp))
-                )
-            }
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicText(
-                    text = "My Notes",
-                    style = TitleTextStyle,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
-                )
-            }
-        }
+        TopBar(title = "My Notes", showLeftButton = true, navController = navController)
 
-
-        Column(
-            modifier = Modifier
-                .weight(0.3f)
-                .fillMaxSize()
-                .fillMaxWidth()
-                .padding(16.dp)
-                .background(color = Color(0xFFCCE5FF), shape = RoundedCornerShape(16.dp)),
-            horizontalAlignment = Alignment.Start
-
-        ) {
-            Column (
+        PrimaryStyledContainer {
+            Column(
                 modifier = Modifier
                     .weight(0.3f)
                     .fillMaxSize()
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .background(color = Color(0x77224499), shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp),
+                    .padding(bottom = 17.dp)
+                    .background(color = BlueContainerColor, shape = RoundedCornerShape(12.dp))
+                    .padding(15.dp),
                 horizontalAlignment = Alignment.Start
 
             ) {
                 BasicText(
                     text = "Dear Diary,",
-                    style = BodyTextStyle,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    style = TextStyle(
+                        fontFamily = playfairDisplayFontFamily,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = DarkBlueColor
+                    ),
+                    modifier = Modifier.padding(bottom = 15.dp)
                 )
 
                 BasicText(
                     text = "Something written by the user",
-                    style = BodyTextStyle,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-            }
-
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-//                  .align(Alignment.BottomCenter)
-            ) {
-                BasicText(
-                    text = "Burn my note!",
                     style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                        fontFamily = playfairDisplayFontFamily,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = DarkBlueColor
+                    ),
+//                    modifier = Modifier.padding(bottom = 16.dp)
                 )
             }
+            CustomButton(buttonState = ButtonState(
+                type = ButtonType.SECONDARY,
+                text = "Burn my note!",
+                isActive = true,
+                onClickAction = { overlayVisible = true }
+            ))
         }
+    }
+    if (overlayVisible) {
+        Overlay(
+            title = "Your note will be deleted.\n" +
+                    "Are you sure?",
+            onConfirm = {
+                // Perform navigation or action on confirm
+                navController.navigate("main_screen")
+                overlayVisible = false // Hide overlay
+            },
+            onCancel = {
+                overlayVisible = false // Hide overlay on cancel
+            }
+        )
     }
 }
 
