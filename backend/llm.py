@@ -43,7 +43,7 @@ def generate_emotion(user_note):
     }
 
     response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
+    return response.json()[0]["generated_text"]
 
 
 def generate_recommendation_for_emotion(emotion):
@@ -61,4 +61,4 @@ def generate_recommendation_for_emotion(emotion):
     }
 
     response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
+    return response.json()[0]["generated_text"]
