@@ -312,7 +312,8 @@ fun CustomBoxWithTexts(
 fun TopBar(
     title: String,
     showLeftButton: Boolean = true, // Параметр для показа левой кнопки (по умолчанию true)
-    navController: NavHostController? = null
+    navController: NavHostController? = null,
+    onMiniButtonClick: (() -> Unit)? = null
 ) {
     Box(
         modifier = Modifier
@@ -327,8 +328,11 @@ fun TopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                // Mini button instead of box
-                MiniButton(onClick = { navController?.popBackStack() },)
+                if (onMiniButtonClick != null) {
+                    MiniButton(onClick = onMiniButtonClick)
+                } else {
+                    MiniButton(onClick = { navController?.popBackStack() },)
+                }
             }
         }
         Row(

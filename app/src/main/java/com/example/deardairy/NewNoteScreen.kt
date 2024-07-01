@@ -1,9 +1,11 @@
 package com.example.deardairy
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -61,6 +63,8 @@ object TrapezoidShape : Shape {
 @Composable
 fun NewNoteScreen(navController: NavHostController) {
     var overlayVisible by remember { mutableStateOf(false) }
+    var inputValue by remember { mutableStateOf("") }
+    var isTextFieldFocused by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
         .background(color = BackgroundColor)
@@ -83,14 +87,28 @@ fun NewNoteScreen(navController: NavHostController) {
                         fontWeight = FontWeight.Normal,
                         fontSize = 15.sp,
                         color = DarkBlueColor
-                    ), modifier = Modifier.padding(bottom = 15.dp))
-                    BasicText(text = "Start writing about how you feel \n" +
-                            "or get any help from Diary", style = TextStyle(
-                        fontFamily = playfairDisplayFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 15.sp,
-                        color = BackgroundColor
-                    ), modifier = Modifier.padding(bottom = 5.dp))
+                    ), modifier = Modifier.padding(bottom = 15.dp).width(250.dp))
+
+                  val additionalInfoText =  "Start writing about how you feel \n" +
+                            "or get any help from Diary"
+
+                    BasicTextField(
+                        value = inputValue,
+                        onValueChange = { newInputValue: String ->
+                            inputValue = newInputValue
+                            if (newInputValue.isEmpty()) {
+                                inputValue = additionalInfoText
+                            }
+                        },
+                        textStyle = TextStyle(
+                            fontFamily = playfairDisplayFontFamily,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 15.sp,
+                            color = BackgroundColor
+                        ),
+                        modifier = Modifier.fillMaxSize().width(250.dp),
+                        interactionSource = remember { MutableInteractionSource() }
+                    )
 
                 }
                 Spacer(modifier = Modifier.height(17.dp))

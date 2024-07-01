@@ -1,5 +1,6 @@
 package com.example.deardairy
 
+import android.content.Context
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,13 +14,20 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -31,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.deardairy.database.AppDatabase
+//import com.example.deardairy.database.AppDatabase
 import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.BlueContainerColor
 import com.example.deardairy.ui.theme.BodyTextStyle
@@ -42,6 +53,33 @@ import com.example.deardairy.ui.theme.LightBlueContainerColor
 import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+
+object DatabaseHelper {
+
+    suspend fun getRandomAffirmation(context: Context): String {
+        val database = Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "dear_dairy_database"
+        ).build()
+
+        val affirmationDao = database.affirmationDao()
+
+        var randomId = (0..99).random()
+        var randomIdLong = randomId.toLong()
+        Log.d("AffirmationPreview", "Random ID: $randomId")
+
+        val affirmation = affirmationDao.findById(randomIdLong)
+        affirmation?.text ?: "No affirmation found"
+        return affirmation?.text ?: "No affirmation found"
+    }
+}
+
+
 
 val NotesCounter =  8
 
@@ -54,6 +92,21 @@ fun MainScreen(navController: NavHostController) {
     val scrollState = rememberScrollState()
     val cardWidth = screenWidthDp/2 - 25.dp - 10.5.dp
     val cardHeight =  cardWidth * 1.092f
+
+    var randomAffirmation by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        try {
+            val affirmation = withContext(Dispatchers.IO) {
+                DatabaseHelper.getRandomAffirmation(context)
+            }
+            randomAffirmation = affirmation
+        } catch (e: Exception) {
+            Log.e("MainScreen", "Error fetching affirmation", e)
+            randomAffirmation = "Failed to load affirmation"
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -232,7 +285,8 @@ fun MainScreen(navController: NavHostController) {
             contentAlignment = Alignment.TopStart
         ) {
             BasicText(
-                text = "Affirmation or quote of the day",
+                text = randomAffirmation ?: "Loading...",
+//                text = "test",
                 style = TextStyle(
                     fontFamily = playfairDisplayFontFamily,
                     fontWeight = FontWeight.SemiBold,
@@ -249,5 +303,11 @@ fun MainScreen(navController: NavHostController) {
 @Preview
 @Composable
 fun MainScreenPreview() {
+    val context = LocalContext.current
     MainScreen(navController = rememberNavController())
+    var randomAffirmation by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        randomAffirmation = DatabaseHelper.getRandomAffirmation(context)
+    }
 }

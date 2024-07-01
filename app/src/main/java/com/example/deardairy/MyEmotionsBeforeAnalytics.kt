@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,12 +54,15 @@ fun MyEmotionsBeforeAnalyticsScreen(navController: NavHostController) {
         PrimaryStyledContainer(verticalArrangement = Arrangement.Center) {
             Column(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Spacer(modifier = Modifier.height(250.dp))
                 Column(
+                    modifier = Modifier
+                        .fillMaxHeight(0.8f),
                     verticalArrangement = Arrangement.spacedBy(17.dp)
                 ) {
 //                    ChoiceItem(text = "Today", )
@@ -83,25 +87,25 @@ fun MyEmotionsBeforeAnalyticsScreen(navController: NavHostController) {
                         onItemSelected = { selectedItem = "Last month" }, // Обновляем состояние при выборе элемента
                         radius = 20.dp
                     )
-                    ChoiceItem(
-                        text = "Last month",
-                        isSelected = selectedItem == "Last month2", // Используем состояние для определения, выбран ли элемент
-                        onItemSelected = { selectedItem = "Last month2" }, // Обновляем состояние при выборе элемента
-                        radius = 20.dp
+//                    ChoiceItem(
+//                        text = "Last month",
+//                        isSelected = selectedItem == "Last month2", // Используем состояние для определения, выбран ли элемент
+//                        onItemSelected = { selectedItem = "Last month2" }, // Обновляем состояние при выборе элемента
+//                        radius = 20.dp
+//                    )
+                }
+                Box {
+                    CustomButton(
+                        buttonState = ButtonState(
+                            type = ButtonType.PRIMARY,
+                            text = "Next",
+                            isActive = true,
+                            onClickAction = {navController.navigate("my_emotions_loading/$selectedItem")}
+                        )
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(220.dp))
-            Box {
-                CustomButton(
-                    buttonState = ButtonState(
-                        type = ButtonType.PRIMARY,
-                        text = "Next",
-                        isActive = true,
-                        onClickAction = {navController.navigate("my_emotions_loading")}
-                    )
-                )
-            }
+
 
         }
     }

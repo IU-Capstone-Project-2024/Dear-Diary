@@ -2,6 +2,7 @@ package com.example.deardairy
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,18 +25,31 @@ import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 import androidx.compose.ui.text.TextStyle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.ui.theme.BlueContainerColor
 
 
 @Composable
-fun MyEmotionsAnalytics(onNextClicked: () -> Unit) {
+fun MyEmotionsAnalytics(navController: NavHostController, selectedTimePeriod: String) {
+    val configuration = LocalConfiguration.current
+    val screenWidthDp = configuration.screenWidthDp.dp
+    val screenHeightDp = configuration.screenHeightDp.dp
+//    val emotionsBlockHeight = screenHeightDp / 6.2f
+    val scrollState = rememberScrollState()
+//    val cardWidth = screenWidthDp/2 - 25.dp - 10.5.dp
+//    val cardHeight =  cardWidth * 1.092
+
     Column(
         modifier = Modifier
             .background(color = BackgroundColor)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        TopBar(title = "My Emotions", showLeftButton = true)
+        TopBar(title = "My Emotions", showLeftButton = true, navController = navController)
+        {
+            navController.navigate("my_emotions")
+        }
 
         PrimaryStyledContainer{
             Column(
@@ -51,7 +66,7 @@ fun MyEmotionsAnalytics(onNextClicked: () -> Unit) {
                     fontSize = 20.sp,
                     color = DarkBlueColor
                 ))
-                Text(text = "Today", style = TextStyle(
+                Text(text = selectedTimePeriod, style = TextStyle(
                     fontFamily = playfairDisplayFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -61,8 +76,8 @@ fun MyEmotionsAnalytics(onNextClicked: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(39.dp))
             Box(modifier = Modifier
-                .size(330.dp)
-                .background(BlueContainerColor))
+                .size(screenWidthDp - (21.dp * 2 * 2))
+                .background(BlueContainerColor, shape = RoundedCornerShape(10000.dp)))
         }
         // Blue container with three texts
         Column(
@@ -102,7 +117,7 @@ fun MyEmotionsAnalytics(onNextClicked: () -> Unit) {
             }
             // Button at the bottom
             Button(
-                onClick = onNextClicked,
+                onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
 //                    .padding(16.dp)
@@ -121,5 +136,5 @@ fun MyEmotionsAnalytics(onNextClicked: () -> Unit) {
 @Preview
 @Composable
 fun MyEmotionsAnalyticsPreview() {
-    MyEmotionsAnalytics(onNextClicked = {})
+    MyEmotionsAnalytics(navController = rememberNavController(), selectedTimePeriod = "Last week")
 }

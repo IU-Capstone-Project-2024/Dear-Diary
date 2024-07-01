@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -50,6 +51,12 @@ android {
 }
 
 dependencies {
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+    implementation("androidx.room:room-runtime:2.5.0-alpha02")
+    implementation("androidx.room:room-ktx:2.5.0-alpha02")
+    kapt("androidx.room:room-compiler:2.5.0-alpha02")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation(libs.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

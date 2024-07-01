@@ -8,6 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +26,11 @@ import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
+import kotlinx.coroutines.delay
 
 
 @Composable
-fun MyEmotionsLoading(navController: NavHostController) {
+fun MyEmotionsLoading(navController: NavHostController, selectedTimePeriod: String) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -48,10 +50,14 @@ fun MyEmotionsLoading(navController: NavHostController) {
             )
         }
     }
+    LaunchedEffect(Unit) {
+        delay(2000) // Задержка на 2 секунды
+        navController.navigate("my_emotions_analytics/$selectedTimePeriod")
+    }
 }
 
 @Preview
 @Composable
 fun MyEmotionsLoadingPreview() {
-    MyEmotionsLoading(navController = rememberNavController())
+    MyEmotionsLoading(navController = rememberNavController(), selectedTimePeriod = "Today")
 }

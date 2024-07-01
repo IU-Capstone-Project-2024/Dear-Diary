@@ -3,9 +3,11 @@ package com.example.deardairy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 @Composable
 fun NavGraph(
@@ -44,8 +46,19 @@ fun NavGraph(
         composable("my_emotions_before_analytics") {
             MyEmotionsBeforeAnalyticsScreen(navController)
         }
-        composable("my_emotions_loading"){
-            MyEmotionsLoading(navController = navController)
+        composable(
+            "my_emotions_loading/{selectedTimePeriod}",
+            arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
+            MyEmotionsLoading(navController = navController, selectedTimePeriod = selectedTimePeriod)
+        }
+        composable(
+            "my_emotions_analytics/{selectedTimePeriod}",
+            arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
+            MyEmotionsAnalytics(navController = navController, selectedTimePeriod = selectedTimePeriod)
         }
     }
 }

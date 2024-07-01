@@ -35,7 +35,9 @@ fun MyEmotionsScreen(navController: NavHostController) {
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        TopBar(title = "My Emotions", showLeftButton = true, navController = navController)
+        TopBar(title = "My Emotions", showLeftButton = true, navController = navController){
+            navController.navigate("main_screen")
+        }
 
         PrimaryStyledContainer{
             LazyColumn (
