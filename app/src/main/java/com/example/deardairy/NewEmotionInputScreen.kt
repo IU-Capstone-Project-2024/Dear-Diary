@@ -49,17 +49,9 @@ fun NewEmotionInputScreen(navController: NavHostController) {
             additionalInfoText = "Describe what you feel and Diary will tell what emotion it is",
             onButtonClick = { inputValue ->
                 Log.d("NewEmotionInputScreen", "Button clicked with input: $inputValue")
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response = apiClient.postEmotion(inputValue)
-                    withContext(Dispatchers.Main) {
-                        if (response != null) {
-                            Log.d("NewEmotionInputScreen", "Navigation to new_emotion with response: $response")
-                            navController.navigate("new_emotion/${response.emotion}/${response.recommendation}")
-                        } else {
-                            Log.e("NewEmotionInputScreen", "Failed to receive response")
-                        }
-                    }
-                }
+                navController.navigate("loading_screen/$inputValue/new_emotion/another_screen")
+
+
 //                inputValue ->
                 // Navigate to NewEmotionScreen with input value
 //                navController.navigate("new_emotion")

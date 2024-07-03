@@ -149,7 +149,7 @@ fun NewEmotionScreen(navController: NavHostController, emotion: String, recommen
                             emotionDatabase.emotionDao().insertEmotion(newEmotion)
                             Log.d("NewEmotion", "after insert new emotion")
                             val userDatabase = UserDatabase.getDatabase(context)
-                            Log.d("NewEmotion", "notes: ${emotionDatabase.emotionDao().getAllNEmotions()}")
+                            Log.d("NewEmotion", "notes: ${emotionDatabase.emotionDao().getAllEmotions()}")
                             try {
                                 var true_count = emotionDatabase.emotionDao().getEmotionCount()
                                 userDatabase.userDao().updateEmotionsCounter(true_count)

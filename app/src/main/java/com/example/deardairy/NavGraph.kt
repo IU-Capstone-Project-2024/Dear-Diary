@@ -43,6 +43,21 @@ fun NavGraph(
         composable("my_emotions") {
             MyEmotionsScreen(navController = navController)
         }
+        composable("new_emotion_input") { NewEmotionInputScreen(navController) }
+        composable("loading_screen/{inputValue}/{successDestination}/{failureDestination}") { backStackEntry ->
+            val inputValue = backStackEntry.arguments?.getString("inputValue") ?: ""
+            val successDestination = backStackEntry.arguments?.getString("successDestination") ?: ""
+            val failureDestination = backStackEntry.arguments?.getString("failureDestination") ?: ""
+            MyEmotionsLoading(navController, inputValue, successDestination, failureDestination)
+        }
+        composable("new_emotion/{emotion}/{recommendation}") { backStackEntry ->
+            val emotion = backStackEntry.arguments?.getString("emotion") ?: ""
+            val recommendation = backStackEntry.arguments?.getString("recommendation") ?: ""
+            NewEmotionScreen(navController, emotion ?: "Unknown Emotion", recommendation ?: "No recommendation available")
+        }
+        composable("error_screen") {
+            // Define your error screen here
+        }
         composable("new_note_screen") {
 //            NewNoteScreen(navController = navController, noteViewModel = noteViewModel)
             NewNoteScreen(navController = navController)
@@ -53,13 +68,13 @@ fun NavGraph(
         composable("my_emotions_before_analytics") {
             MyEmotionsBeforeAnalyticsScreen(navController)
         }
-        composable(
-            "my_emotions_loading/{selectedTimePeriod}",
-            arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
-            MyEmotionsLoading(navController = navController, selectedTimePeriod = selectedTimePeriod)
-        }
+//        composable(
+//            "my_emotions_loading/{selectedTimePeriod}",
+//            arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
+//        ) { backStackEntry ->
+//            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
+//            MyEmotionsLoading(navController = navController, selectedTimePeriod = selectedTimePeriod)
+//        }
         composable(
             "my_emotions_analytics/{selectedTimePeriod}",
             arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
@@ -75,7 +90,7 @@ fun NavGraph(
             PrevNoteScreen(navController = navController, noteId = noteId)
         }
 
-        composable("new_emotion_input") { NewEmotionInputScreen(navController) }
+//        composable("new_emotion_input") { NewEmotionInputScreen(navController) }
         composable("new_emotion/{emotion}/{recommendation}") { backStackEntry ->
             val emotion = backStackEntry.arguments?.getString("emotion")
             val recommendation = backStackEntry.arguments?.getString("recommendation")

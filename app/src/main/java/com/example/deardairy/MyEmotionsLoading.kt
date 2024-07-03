@@ -1,5 +1,6 @@
 package com.example.deardairy
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,17 +21,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.deardairy.network.ApiClient
 import com.example.deardairy.ui.theme.BodyTextStyle
 import com.example.deardairy.ui.theme.DarkBlueColor
 import com.example.deardairy.ui.theme.PrimaryStyledContainer
 import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 
 @Composable
-fun MyEmotionsLoading(navController: NavHostController, selectedTimePeriod: String) {
+fun MyEmotionsLoading(navController: NavHostController,  inputValue: String, successDestination: String, failureDestination: String) {
+    val apiClient = ApiClient()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -51,13 +57,22 @@ fun MyEmotionsLoading(navController: NavHostController, selectedTimePeriod: Stri
         }
     }
     LaunchedEffect(Unit) {
-        delay(2000) // Задержка на 2 секунды
-        navController.navigate("my_emotions_analytics/$selectedTimePeriod")
+        withContext(Dispatchers.IO) {
+            val response = apiClient.postEmotion(inputValue)
+            withContext(Dispatchers.Main) {
+                if (response != null) {
+                    navController.navigate("$successDestination/${response.emotion}/${response.recommendation}")
+                } else {
+                    Log.e("MyEmotionsLoading", "Failed to receive response")
+                    navController.navigate(failureDestination)
+                }
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 fun MyEmotionsLoadingPreview() {
-    MyEmotionsLoading(navController = rememberNavController(), selectedTimePeriod = "Today")
+    MyEmotionsLoading(navController = rememberNavController(), inputValue = "Sample input", successDestination = "new_emotion", failureDestination = "error_screen")
 }

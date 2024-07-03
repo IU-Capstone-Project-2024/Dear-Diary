@@ -24,7 +24,7 @@ interface EmotionDao {
     fun insertEmotion(emotion: Emotion)
 
     @Query("SELECT * FROM Emotion")
-    fun getAllNEmotions(): List<Emotion>
+    fun getAllEmotions(): List<Emotion>
 
     @Query("SELECT * FROM Emotion WHERE id = :id")
     fun getEmotionById(id: Long): Emotion?
