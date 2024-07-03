@@ -93,6 +93,37 @@ abstract class NoteDatabase : RoomDatabase() {
     }
 }
 
+@Database(entities = [Emotion::class], version = 1, exportSchema = false)
+abstract class EmotionDatabase : RoomDatabase() {
+    abstract fun emotionDao(): EmotionDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: EmotionDatabase? = null
+
+        fun getDatabase(context: Context): EmotionDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                Log.d("EmotionDatabase", "Creating new database instance")
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    EmotionDatabase::class.java,
+                    "emotion_database"
+                ).fallbackToDestructiveMigration()
+                    .build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+        fun destroyInstance() {
+            INSTANCE = null
+        }
+    }
+}
+
 // User::class, Note::class, Emotion::class, , Note::class
 @Database(entities = [Affirmation::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {

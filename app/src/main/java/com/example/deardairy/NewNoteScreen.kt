@@ -76,7 +76,7 @@ fun NewNoteScreen(navController: NavHostController) {
         .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        TopBar(title = "New Note", showLeftButton = true, navController = navController)
+        TopBar(title = "New Note", showLeftButton = true, navController = navController, onMiniButtonClick = {overlayVisible = true})
 
 
         PrimaryStyledContainer {
@@ -123,7 +123,33 @@ fun NewNoteScreen(navController: NavHostController) {
                         type = ButtonType.PRIMARY,
                         text = "Save my note",
                         isActive = true,
-                        onClickAction = { overlayVisible = true}
+                        onClickAction = {
+
+                            val newNote = Note(
+                                name = "New Note",  // Your logic for the note name
+                                text = inputValue,
+                                date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val noteDatabase = NoteDatabase.getDatabase(context)
+                                Log.d("NewNote", "before insert new note")
+                                noteDatabase.noteDao().insert(newNote)
+                                Log.d("NewNote", "after insert new note")
+                                val userDatabase = UserDatabase.getDatabase(context)
+                                Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
+                                try {
+                                    var true_count = noteDatabase.noteDao().getNotesCount()
+                                    userDatabase.userDao().updateNotesCounter(true_count)
+
+                                } finally {
+                                    var count = userDatabase.userDao().getNotesCounter()
+                                    Log.d("NewNote", "Notes counter: $count")
+                                }
+                                withContext(Dispatchers.Main) {
+                                    navController.navigate("main_screen")
+                                }
+                            }
+                        }
                     )
                 )
             }
@@ -134,32 +160,8 @@ fun NewNoteScreen(navController: NavHostController) {
                 title = "Your notes will not be saved.\n" +
                         "Are you sure?",
                 onConfirm = {
-                    val newNote = Note(
-                        name = "New Note",  // Your logic for the note name
-                        text = inputValue,
-                        date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-                    )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val noteDatabase = NoteDatabase.getDatabase(context)
-                        Log.d("NewNote", "before insert new note")
-                        noteDatabase.noteDao().insert(newNote)
-                        Log.d("NewNote", "after insert new note")
-                        val userDatabase = UserDatabase.getDatabase(context)
-                        Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
-                        try {
-                            var true_count = noteDatabase.noteDao().getNotesCount()
-                            userDatabase.userDao().updateNotesCounter(true_count)
-
-                        } finally {
-                            var count = userDatabase.userDao().getNotesCounter()
-                            Log.d("NewNote", "Notes counter: $count")
-                        }
-                        withContext(Dispatchers.Main) {
                             navController.navigate("main_screen")
                             overlayVisible = false
-                        }
-                    }
-
                 },
                 onCancel = {
                     overlayVisible = false // Hide overlay on cancel

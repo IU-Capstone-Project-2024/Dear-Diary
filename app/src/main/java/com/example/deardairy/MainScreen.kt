@@ -262,7 +262,7 @@ fun MainScreen(navController: NavHostController) {
                 }
             }
 
-            var nc = 2;
+
             var lastNote: Note? = null
             if (notesList.size > 1) {
 //                Log.d("MainScreen", "notelist: ${notesList.size}")
@@ -271,10 +271,11 @@ fun MainScreen(navController: NavHostController) {
 //                    Log.d("MainScreen", "odd: ${remainderNotes.size}")
                     lastNote = remainderNotes.removeLastOrNull()
                 }
+                var nc = notesList.size
 
 //                Log.d("MainScreen", "remainderNotes: ${remainderNotes.size}")
 
-                remainderNotes.chunked(2) { chunkedNotes ->
+                remainderNotes.chunked(2).forEachIndexed{ index, chunkedNotes ->
                     item {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -289,7 +290,7 @@ fun MainScreen(navController: NavHostController) {
                                     text3 = note.date ?: "No date",
                                     noteId = note.NoteId
                                 )
-                                nc += 1
+                                nc -= 1
                             }
 
                         }
