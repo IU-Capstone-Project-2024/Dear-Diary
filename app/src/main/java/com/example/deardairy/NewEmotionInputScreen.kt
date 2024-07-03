@@ -2,6 +2,7 @@ package com.example.deardairy
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,13 +15,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.deardairy.network.ApiClient
 import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.EmotionBox
 import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun NewEmotionInputScreen(navController: NavHostController) {
+    val apiClient = ApiClient()
     Column(
         modifier = Modifier
             .background(color = BackgroundColor)
@@ -41,8 +48,21 @@ fun NewEmotionInputScreen(navController: NavHostController) {
             descriptionSize = 15f,
             additionalInfoText = "Describe what you feel and Diary will tell what emotion it is",
             onButtonClick = { inputValue ->
+                Log.d("NewEmotionInputScreen", "Button clicked with input: $inputValue")
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response = apiClient.postEmotion(inputValue)
+                    withContext(Dispatchers.Main) {
+                        if (response != null) {
+                            Log.d("NewEmotionInputScreen", "Navigation to new_emotion with response: $response")
+                            navController.navigate("new_emotion/${response.emotion}/${response.recommendation}")
+                        } else {
+                            Log.e("NewEmotionInputScreen", "Failed to receive response")
+                        }
+                    }
+                }
+//                inputValue ->
                 // Navigate to NewEmotionScreen with input value
-                navController.navigate("new_emotion")
+//                navController.navigate("new_emotion")
 //                {
 //                    // Pass inputValue as an argument
 //                    this.arguments = Bundle().apply {

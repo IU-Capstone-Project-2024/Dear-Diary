@@ -95,16 +95,16 @@ fun NewNoteScreen(navController: NavHostController) {
                         color = DarkBlueColor
                     ), modifier = Modifier.padding(bottom = 15.dp).width(250.dp))
 
-                  val additionalInfoText =  "Start writing about how you feel \n" +
-                            "or get any help from Diary"
+//                  val additionalInfoText =  "Start writing about how you feel \n" +
+//                            "or get any help from Diary"
 
                     BasicTextField(
                         value = inputValue,
                         onValueChange = { newInputValue: String ->
                             inputValue = newInputValue
-                            if (newInputValue.isEmpty()) {
-                                inputValue = additionalInfoText
-                            }
+//                            if (newInputValue.isEmpty()) {
+//                                inputValue = additionalInfoText
+//                            }
                         },
                         textStyle = TextStyle(
                             fontFamily = playfairDisplayFontFamily,

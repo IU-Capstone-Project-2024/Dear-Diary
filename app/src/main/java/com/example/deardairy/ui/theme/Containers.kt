@@ -217,9 +217,9 @@ fun EmotionBox(
                     value = inputValue,
                     onValueChange = { newInputValue: String ->
                         inputValue = newInputValue
-                        if (newInputValue.isEmpty()) {
-                            inputValue = additionalInfoText
-                        }
+//                        if (newInputValue.isEmpty()) {
+//                            inputValue = additionalInfoText
+//                        }
                     },
                     textStyle = TextStyle(
                         fontFamily = playfairDisplayFontFamily,

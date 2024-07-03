@@ -1,5 +1,8 @@
 package com.example.deardairy
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Overlay
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.deardairy.database.Emotion
+import com.example.deardairy.database.EmotionDatabase
+import com.example.deardairy.database.Note
+import com.example.deardairy.database.NoteDatabase
+import com.example.deardairy.database.UserDatabase
 import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.BlueContainerColor
 import com.example.deardairy.ui.theme.BodyTextStyle
@@ -37,12 +46,22 @@ import com.example.deardairy.ui.theme.PrimaryStyledContainerPreview
 import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 //import com.example.deardairy.ui.theme.
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewEmotionScreen(navController: NavHostController) {
+fun NewEmotionScreen(navController: NavHostController, emotion: String, recommendation: String) {
     var overlayVisible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -76,7 +95,7 @@ fun NewEmotionScreen(navController: NavHostController) {
                 )
 
                 BasicText(
-                    text = "Anger",
+                    text = emotion,
                     style = TextStyle(
                         fontFamily = playfairDisplayFontFamily,
                         fontWeight = FontWeight.Normal,
@@ -88,7 +107,7 @@ fun NewEmotionScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(15.dp))
 
                 BasicText(
-                    text = "Some recommendations or whatever",
+                    text = recommendation,
                     style = TextStyle(
                         fontFamily = playfairDisplayFontFamily,
                         fontWeight = FontWeight.Normal,
@@ -118,7 +137,33 @@ fun NewEmotionScreen(navController: NavHostController) {
                     type = ButtonType.PRIMARY,
                     text = "Save my emotion",
                     isActive = true,
-                    onClickAction = {navController.navigate("my_emotions")}
+                    onClickAction = {
+                        val newEmotion = Emotion(
+                            name = emotion,  // Your logic for the note name
+                            text = recommendation,
+                            date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val emotionDatabase = EmotionDatabase.getDatabase(context)
+                            Log.d("NewEmotion", "before insert new emotion")
+                            emotionDatabase.emotionDao().insertEmotion(newEmotion)
+                            Log.d("NewEmotion", "after insert new emotion")
+                            val userDatabase = UserDatabase.getDatabase(context)
+                            Log.d("NewEmotion", "notes: ${emotionDatabase.emotionDao().getAllNEmotions()}")
+                            try {
+                                var true_count = emotionDatabase.emotionDao().getEmotionCount()
+                                userDatabase.userDao().updateEmotionsCounter(true_count)
+//                                Log.d("NewEmotion", "emotions counter: ${userDatabase.userDao().getEmotionsCounter()}")
+                            } finally {
+                                var count = userDatabase.userDao().getEmotionsCounter()
+                                Log.d("NewNote", "Emotion counter: $count")
+                            }
+                            withContext(Dispatchers.Main) {
+                                navController.navigate("my_emotions")
+                            }
+                        }
+
+                    }
                 ))
                 
             }
@@ -139,8 +184,9 @@ fun NewEmotionScreen(navController: NavHostController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun NewEmotionScreenPreview() {
-    NewEmotionScreen(navController = rememberNavController())
+    NewEmotionScreen(navController = rememberNavController(), emotion = "Sadness", recommendation = "Recommendation: Practice self-care by taking a warm bath...")
 }

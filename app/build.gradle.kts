@@ -51,6 +51,10 @@ android {
 }
 
 dependencies {
+    implementation ("com.squareup.moshi:moshi:1.12.0")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.2")
     implementation ("com.jakewharton.timber:timber:5.0.1")
     implementation("androidx.room:room-runtime:2.5.0-alpha02")
     implementation("androidx.room:room-ktx:2.5.0-alpha02")

@@ -34,12 +34,12 @@ fun NavGraph(
         composable("main_screen") {
             MainScreen(navController = navController)
         }
-        composable("new_emotion_input") {
-            NewEmotionInputScreen(navController = navController)
-        }
-        composable("new_emotion") {
-            NewEmotionScreen(navController = navController)
-        }
+//        composable("new_emotion_input") {
+//            NewEmotionInputScreen(navController = navController)
+//        }
+//        composable("new_emotion") {
+//            NewEmotionScreen(navController = navController)
+//        }
         composable("my_emotions") {
             MyEmotionsScreen(navController = navController)
         }
@@ -73,6 +73,13 @@ fun NavGraph(
         ) { navBackStackEntry ->
             val noteId = navBackStackEntry.arguments?.getLong("noteId") ?: 0
             PrevNoteScreen(navController = navController, noteId = noteId)
+        }
+
+        composable("new_emotion_input") { NewEmotionInputScreen(navController) }
+        composable("new_emotion/{emotion}/{recommendation}") { backStackEntry ->
+            val emotion = backStackEntry.arguments?.getString("emotion")
+            val recommendation = backStackEntry.arguments?.getString("recommendation")
+            NewEmotionScreen(navController, emotion ?: "Unknown Emotion", recommendation ?: "No recommendation available")
         }
     }
 }

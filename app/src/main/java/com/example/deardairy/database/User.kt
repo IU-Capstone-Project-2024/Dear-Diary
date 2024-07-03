@@ -34,11 +34,14 @@ interface UserDao {
     @Query("UPDATE User SET notesCounter = :trueCount WHERE userId = 0 ")
     fun updateNotesCounter(trueCount: Int)
 
-    @Query("UPDATE User SET emotionsCounter = (emotionsCounter + 1) WHERE userId = 0 ")
-    fun updateEmotionsCounter()
+    @Query("UPDATE User SET emotionsCounter = :trueCount WHERE userId = 0 ")
+    fun updateEmotionsCounter(trueCount: Int)
 
     @Query("SELECT notesCounter FROM User WHERE userId = 0")
     fun getNotesCounter(): Int?
+
+    @Query("SELECT emotionsCounter FROM User WHERE userId = 0")
+    fun getEmotionsCounter(): Int?
 
     @Query("SELECT * FROM User WHERE userId = :userId")
     fun getUserById(userId: Int): User?
