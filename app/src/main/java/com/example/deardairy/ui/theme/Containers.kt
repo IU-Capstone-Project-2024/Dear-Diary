@@ -1,6 +1,7 @@
 package com.example.deardairy.ui.theme
 
 import android.media.Image
+import android.util.Log
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -253,7 +254,9 @@ fun CustomBoxWithTexts(
     boxHeight: Dp,
     text1: String,
     text2: String,
-    text3: String
+    text3: String,
+    noteId: Long // Новый параметр для ID записки
+
 ) {
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
@@ -266,7 +269,10 @@ fun CustomBoxWithTexts(
             .width(cardWidth)
             .height(cardHeight)
             .background(color = BlueContainerColor, shape = RoundedCornerShape(24.dp))
-            .clickable { navController.navigate("prev_note_screen") },
+            .clickable {
+                Log.d("PrevNoteScreen", "noteId: $noteId")
+                navController.navigate("prev_note_screen/${noteId}")
+                       },
 //        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.Start
     ) {
@@ -295,15 +301,15 @@ fun CustomBoxWithTexts(
                     color = DarkBlueColor
                 )
             )
-            BasicText(
-                text = text2,
-                style = TextStyle(
-                    fontFamily = playfairDisplayFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    color = DarkBlueColor
-                )
-            )
+//            BasicText(
+//                text = text2,
+//                style = TextStyle(
+//                    fontFamily = playfairDisplayFontFamily,
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 15.sp,
+//                    color = DarkBlueColor
+//                )
+//            )
 
             BasicText(
                 text = text3, style = TextStyle(

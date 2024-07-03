@@ -76,7 +76,7 @@ object DatabaseHelper {
 
         var randomId = (0..99).random()
         var randomIdLong = randomId.toLong()
-        Log.d("AffirmationPreview", "Random ID: $randomId")
+//        Log.d("AffirmationPreview", "Random ID: $randomId")
 
         val affirmation = affirmationDao.findById(randomIdLong)
         affirmation?.text ?: "No affirmation found"
@@ -112,7 +112,7 @@ fun MainScreen(navController: NavHostController) {
             var userDatabase = UserDatabase.getDatabase(context)
             try{
                 NotesCounter = userDatabase.userDao().getNotesCounter() ?: 0
-                Log.d("MainScreen", "NotesCounter: ${NotesCounter}")
+//                Log.d("MainScreen", "NotesCounter: ${NotesCounter}")
             } catch (e: Exception){
                 Log.e("MainScreen", "Error getting notes counter", e)
             }
@@ -254,7 +254,8 @@ fun MainScreen(navController: NavHostController) {
                                 boxHeight = 60.dp,
                                 text1 = firstNote.name,
                                 text2 = "null",
-                                text3 = firstNote.date ?: "No date"
+                                text3 = firstNote.date ?: "No date",
+                                noteId = firstNote.NoteId
                             )
                         }
                     }
@@ -264,14 +265,14 @@ fun MainScreen(navController: NavHostController) {
             var nc = 2;
             var lastNote: Note? = null
             if (notesList.size > 1) {
-                Log.d("MainScreen", "notelist: ${notesList.size}")
+//                Log.d("MainScreen", "notelist: ${notesList.size}")
                 val remainderNotes = notesList.drop(1).toMutableList()
                 if ((remainderNotes.size) % 2 == 1){
-                    Log.d("MainScreen", "odd: ${remainderNotes.size}")
+//                    Log.d("MainScreen", "odd: ${remainderNotes.size}")
                     lastNote = remainderNotes.removeLastOrNull()
                 }
 
-                Log.d("MainScreen", "remainderNotes: ${remainderNotes.size}")
+//                Log.d("MainScreen", "remainderNotes: ${remainderNotes.size}")
 
                 remainderNotes.chunked(2) { chunkedNotes ->
                     item {
@@ -285,7 +286,8 @@ fun MainScreen(navController: NavHostController) {
                                     boxHeight = 60.dp,
                                     text1 = note.name,
                                     text2 = nc.toString(),
-                                    text3 = note.date ?: "No date"
+                                    text3 = note.date ?: "No date",
+                                    noteId = note.NoteId
                                 )
                                 nc += 1
                             }
@@ -305,7 +307,8 @@ fun MainScreen(navController: NavHostController) {
                                 boxHeight = 60.dp,
                                 text1 = note.name,
                                 text2 = nc.toString(),
-                                text3 = note.date ?: "No date"
+                                text3 = note.date ?: "No date",
+                                noteId = note.NoteId
                             )
                         }
                     }

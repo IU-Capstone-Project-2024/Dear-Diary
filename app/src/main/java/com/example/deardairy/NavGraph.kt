@@ -1,5 +1,7 @@
 package com.example.deardairy
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,6 +13,7 @@ import androidx.navigation.navArgument
 //import com.example.deardairy.NoteViewModel  // Import your NoteViewModel here
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -44,9 +47,9 @@ fun NavGraph(
 //            NewNoteScreen(navController = navController, noteViewModel = noteViewModel)
             NewNoteScreen(navController = navController)
         }
-        composable("prev_note_screen") {
-            PrevNoteScreen(navController = navController)
-        }
+//        composable("prev_note_screen") {
+//            PrevNoteScreen(navController = navController, noteId = )
+//        }
         composable("my_emotions_before_analytics") {
             MyEmotionsBeforeAnalyticsScreen(navController)
         }
@@ -63,6 +66,13 @@ fun NavGraph(
         ) { backStackEntry ->
             val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
             MyEmotionsAnalytics(navController = navController, selectedTimePeriod = selectedTimePeriod)
+        }
+        composable(
+            "prev_note_screen/{noteId}",
+            arguments = listOf(navArgument("noteId") { type = NavType.LongType })
+        ) { navBackStackEntry ->
+            val noteId = navBackStackEntry.arguments?.getLong("noteId") ?: 0
+            PrevNoteScreen(navController = navController, noteId = noteId)
         }
     }
 }
