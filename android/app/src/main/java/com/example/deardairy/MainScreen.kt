@@ -323,7 +323,6 @@ fun MainScreen(navController: NavHostController) {
                 .background(color = LightBlueContainerColor, shape = RoundedCornerShape(24.dp))
                 .padding(horizontal = 15.dp)
                 .padding(vertical = 6.dp),
-//                .align(Alignment.CenterHorizontally),
             contentAlignment = Alignment.TopStart
         ) {
             BasicText(
