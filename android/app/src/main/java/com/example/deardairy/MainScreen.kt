@@ -327,7 +327,6 @@ fun MainScreen(navController: NavHostController) {
         ) {
             BasicText(
                 text = randomAffirmation ?: "Loading...",
-//                text = "test",
                 style = TextStyle(
                     fontFamily = playfairDisplayFontFamily,
                     fontWeight = FontWeight.SemiBold,
