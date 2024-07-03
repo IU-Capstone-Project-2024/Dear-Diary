@@ -71,7 +71,7 @@ fun MyEmotionsScreen(navController: NavHostController) {
                 verticalArrangement = Arrangement.spacedBy(17.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                items(emotions) { emotion ->
+                items(emotions.reversed()) { emotion ->
                     PrevEmotionContainer(text1 = emotion.name, text2 = "Prompt", text3 = emotion.date)
                 }
             }

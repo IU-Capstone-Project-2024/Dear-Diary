@@ -5,8 +5,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -61,6 +63,7 @@ import java.time.format.DateTimeFormatter
 fun NewEmotionScreen(navController: NavHostController, emotion: String, recommendation: String) {
     var overlayVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
 
     Column(
@@ -80,8 +83,9 @@ fun NewEmotionScreen(navController: NavHostController, emotion: String, recommen
                     .fillMaxWidth()
 //                    .padding(16.dp)
                     .background(color = BlueContainerColor, shape = RoundedCornerShape(12.dp))
-                    .padding(15.dp),
-                horizontalAlignment = Alignment.Start
+                    .padding(15.dp)
+                    .verticalScroll(scrollState), // Enable vertical scrolling
+            horizontalAlignment = Alignment.Start
             ) {
                 BasicText(
                     text = "You emotion is",
