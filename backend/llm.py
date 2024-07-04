@@ -116,6 +116,24 @@ def respond_empathy(user_note):
     Be gentle and kind.""", user_note)
 
 
+def generate_note_title(user_note):
+    context = f"""You are a summarizer. You are given a note.
+    Your goal is to generate a short concise summary for the note.
+    Your response must contain only the summary and be less then 4 words.""".replace("\n", " ")
+
+    payload = {
+        "inputs": f"{context} The note: \"{user_note}\". Write the summary in quotes:",
+        "parameters": {
+            "temperature": 1.0,
+            "return_full_text": False,
+            "max_new_tokens": 6,
+        },
+    }
+
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()[0]["generated_text"]
+
+
 def generate_emotion(user_note):
     context = f"""You are a helpful emotion assistant. You are given a note containing person's thoughts.
     Your goal is to respond with the emotion that the person is feeling.

@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
-from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note
+from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note, generate_note_title
 from utils import sanityze_text_letters_only, sanityze_text_no_special_chars
 
 load_dotenv()
@@ -26,6 +26,21 @@ async def respond_to_note(item: RespondToNoteBody):
     response = generate_response_to_note(item.note)
     response = sanityze_text_no_special_chars(response)
     return RespondToNoteResponse(answer=response)
+
+
+class GenerateNoteTitleBody(BaseModel):
+    note: str
+
+
+class GenerateNoteTitleResponse(BaseModel):
+    title: str
+
+
+@app.post("/noteTitle")
+async def note_title(item: GenerateNoteTitleBody):
+    title = generate_note_title(item.note)
+    title = sanityze_text_no_special_chars(title).strip()
+    return GenerateNoteTitleResponse(title=title)
 
 
 class GetEmotionBody(BaseModel):
