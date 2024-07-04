@@ -1,9 +1,10 @@
 import datetime
 import random
-from typing import Optional
+from typing import Annotated
+
 from dotenv import load_dotenv
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, Body
+from pydantic import BaseModel, Field
 from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note, generate_note_title
 from utils import sanityze_text_letters_only, sanityze_text_no_special_chars
 import firebase_admin
@@ -11,7 +12,9 @@ from firebase_admin import credentials
 from firebase_admin import storage
 
 load_dotenv()
-app = FastAPI()
+app = FastAPI(
+    title="Dear Diary Backend",
+)
 
 cred = credentials.Certificate("firebase-key.json")
 firebase_admin.initialize_app(cred, {
@@ -22,7 +25,7 @@ bucket = storage.bucket()
 
 
 class GetNoteCoverBody(BaseModel):
-    image_id: str | None = None
+    image_id: str | None
 
 
 class GetNoteCoverResponse(BaseModel):
@@ -30,7 +33,10 @@ class GetNoteCoverResponse(BaseModel):
     imageId: str
 
 
-@app.put("/noteCover")
+@app.put("/noteCover", description="""
+    When image_id is set, imageUrl will point to the image with the corresponding id (basically returning the new
+    signed url). Use this when you already have the image_id, but the link has expired.
+    When image_id id not set, random image will be picked. Use this for the first request to get cover image.""")
 async def note_cover(body: GetNoteCoverBody) -> GetNoteCoverResponse:
     image_id = body.image_id
 
