@@ -25,7 +25,7 @@ bucket = storage.bucket()
 
 
 class GetNoteCoverBody(BaseModel):
-    image_id: str | None
+    image_id: str | None = None
 
 
 class GetNoteCoverResponse(BaseModel):
