@@ -8,9 +8,13 @@ load_dotenv()
 app = FastAPI()
 
 
+class StatusResponse(BaseModel):
+    status: str
+
+
 @app.get("/status")
-async def get_status():
-    return {"status": "Up and running"}
+async def get_status() -> StatusResponse:
+    return StatusResponse(status="Up and running")
 
 
 class RespondToNoteBody(BaseModel):
@@ -22,25 +26,25 @@ class RespondToNoteResponse(BaseModel):
 
 
 @app.post("/respondToNote")
-async def respond_to_note(item: RespondToNoteBody):
+async def respond_to_note(item: RespondToNoteBody) -> RespondToNoteResponse:
     response = generate_response_to_note(item.note)
     response = sanityze_text_no_special_chars(response)
     return RespondToNoteResponse(answer=response)
 
 
-class GenerateNoteTitleBody(BaseModel):
+class NoteTitleBody(BaseModel):
     note: str
 
 
-class GenerateNoteTitleResponse(BaseModel):
+class NoteTitleResponse(BaseModel):
     title: str
 
 
 @app.post("/noteTitle")
-async def note_title(item: GenerateNoteTitleBody):
+async def note_title(item: NoteTitleBody) -> NoteTitleResponse:
     title = generate_note_title(item.note)
     title = sanityze_text_no_special_chars(title).strip()
-    return GenerateNoteTitleResponse(title=title)
+    return NoteTitleResponse(title=title)
 
 
 class GetEmotionBody(BaseModel):
@@ -53,7 +57,7 @@ class GetEmotionResponse(BaseModel):
 
 
 @app.post("/emotion")
-async def get_emotion(item: GetEmotionBody):
+async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
     emotion = generate_emotion(item.note)
     emotion = sanityze_text_letters_only(emotion)
 
