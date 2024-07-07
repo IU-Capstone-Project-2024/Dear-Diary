@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="PlayfairDisplay-Bold.ttf">
+            <string>PlayfairDisplay-Bold</string>
+        </array>
+        <array key="PlayfairDisplay-Regular.ttf">
+            <string>PlayfairDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DD" translatesAutoresizingMaskIntoConstraints="NO" id="X0Q-fy-bCV">
+                                <rect key="frame" x="151.66666666666666" y="381" width="90" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="A17-X5-JAQ"/>
+                                    <constraint firstAttribute="height" constant="90" id="XHT-4x-Hxf"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Self-reflection assist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cz-6g-rdU">
+                                <rect key="frame" x="118.33333333333333" y="537.66666666666663" width="156.66666666666669" height="22.666666666666629"/>
+                                <color key="tintColor" red="0.031372549019607843" green="0.12156862745098039" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="PlayfairDisplay-Regular" family="Playfair Display" pointSize="17"/>
+                                <color key="textColor" red="0.031372549019607843" green="0.12156862745098039" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dear Diary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Rd-N0-pOX">
+                                <rect key="frame" x="135.66666666666666" y="501.00000000000006" width="121.99999999999997" height="30.666666666666686"/>
+                                <color key="tintColor" red="0.031372549020000001" green="0.1215686275" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="PlayfairDisplay-Bold" family="Playfair Display" pointSize="24"/>
+                                <color key="textColor" red="0.031372549019607843" green="0.12156862745098039" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="1" green="0.97647058823529409" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="4Rd-N0-pOX" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="2f4-nb-Z21"/>
+                            <constraint firstItem="X0Q-fy-bCV" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="2m0-pT-rUT"/>
+                            <constraint firstItem="1cz-6g-rdU" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="6mi-BW-8ee"/>
+                            <constraint firstItem="4Rd-N0-pOX" firstAttribute="top" secondItem="X0Q-fy-bCV" secondAttribute="bottom" constant="30" id="AN8-Xj-wcW"/>
+                            <constraint firstItem="1cz-6g-rdU" firstAttribute="top" secondItem="4Rd-N0-pOX" secondAttribute="bottom" constant="6" id="EUJ-lS-POf"/>
+                            <constraint firstItem="X0Q-fy-bCV" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="rv1-LI-LEy"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="DD" width="101" height="90"/>
+    </resources>
+</document>

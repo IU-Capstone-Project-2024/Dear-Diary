@@ -1,0 +1,789 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CA0938D62C25EF7F00FA6BC5 /* NewEmotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938D52C25EF7F00FA6BC5 /* NewEmotionView.swift */; };
+		CA0938DB2C26CDDD00FA6BC5 /* NewEmotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938DA2C26CDDD00FA6BC5 /* NewEmotionViewController.swift */; };
+		CA0938DD2C26D3B900FA6BC5 /* NewEmotionDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938DC2C26D3B900FA6BC5 /* NewEmotionDescriptionView.swift */; };
+		CA0938DF2C26D6F200FA6BC5 /* NewEmotionDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938DE2C26D6F200FA6BC5 /* NewEmotionDescriptionViewController.swift */; };
+		CA0938E12C26E5EA00FA6BC5 /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0938E02C26E5E900FA6BC5 /* PlayfairDisplay-Regular.ttf */; };
+		CA0938EB2C28583100FA6BC5 /* OldNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938EA2C28583100FA6BC5 /* OldNoteView.swift */; };
+		CA0938ED2C28596100FA6BC5 /* OldNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938EC2C28596100FA6BC5 /* OldNoteViewController.swift */; };
+		CA0938EF2C286A6A00FA6BC5 /* ParametersEmotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938EE2C286A6A00FA6BC5 /* ParametersEmotionViewController.swift */; };
+		CA0938F12C286A9A00FA6BC5 /* ParametersEmotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938F02C286A9A00FA6BC5 /* ParametersEmotionView.swift */; };
+		CA0938F32C28739700FA6BC5 /* EmotionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938F22C28739700FA6BC5 /* EmotionChartView.swift */; };
+		CA0938F52C2876AB00FA6BC5 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938F42C2876AB00FA6BC5 /* CircularProgressView.swift */; };
+		CA0938F72C28775000FA6BC5 /* EmotionChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938F62C28775000FA6BC5 /* EmotionChartViewController.swift */; };
+		CA0938FD2C28B31400FA6BC5 /* EmotionNameChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0938FC2C28B31300FA6BC5 /* EmotionNameChartView.swift */; };
+		CA4FD7AE2C29A5BB0078DD9B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4FD7AD2C29A5BB0078DD9B /* BaseNavigationController.swift */; };
+		CA6201B32C3AF61F00202F7A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6201B22C3AF61F00202F7A /* Extension.swift */; };
+		CA74B7F82C34796300BC7E64 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74B7F62C34796300BC7E64 /* Note+CoreDataProperties.swift */; };
+		CA74B7FA2C347A5D00BC7E64 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74B7F92C347A5D00BC7E64 /* CoreDataManager.swift */; };
+		CA74B7FE2C34AA5400BC7E64 /* Emotion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74B7FC2C34AA5400BC7E64 /* Emotion+CoreDataProperties.swift */; };
+		CA74B8042C393AB500BC7E64 /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74B8032C393AB500BC7E64 /* BasePresenter.swift */; };
+		CA74B8072C393C5900BC7E64 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CA74B8062C393C5900BC7E64 /* Alamofire */; };
+		CA8BA73B2C3983A9004696AA /* PositiveAffirmations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8BA73A2C3983A9004696AA /* PositiveAffirmations.swift */; };
+		CA8BA73F2C3994E7004696AA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8BA73E2C3994E7004696AA /* OnboardingView.swift */; };
+		CA8BA7422C39958A004696AA /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8BA7412C39958A004696AA /* OnboardingViewController.swift */; };
+		CA9C91F02C1D86A80074AA30 /* PlayfairDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9C91EF2C1D86A80074AA30 /* PlayfairDisplay-Italic.ttf */; };
+		CA9C91FD2C1D89D20074AA30 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C91FC2C1D89D20074AA30 /* MainView.swift */; };
+		CA9C91FF2C1D8B550074AA30 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C91FE2C1D8B550074AA30 /* MainViewController.swift */; };
+		CA9C92012C1D8C6F0074AA30 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92002C1D8C6F0074AA30 /* NoteView.swift */; };
+		CA9C92032C1D8C8C0074AA30 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92022C1D8C8C0074AA30 /* NoteViewController.swift */; };
+		CA9C92052C1D8CD30074AA30 /* QuestionaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92042C1D8CD30074AA30 /* QuestionaryViewController.swift */; };
+		CA9C92072C1D8CE50074AA30 /* QuestionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92062C1D8CE50074AA30 /* QuestionaryView.swift */; };
+		CA9C920E2C1DA1F30074AA30 /* PinLayout in Frameworks */ = {isa = PBXBuildFile; productRef = CA9C920D2C1DA1F30074AA30 /* PinLayout */; };
+		CA9C92122C1DAD080074AA30 /* EmotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92112C1DAD080074AA30 /* EmotionView.swift */; };
+		CA9C92142C1DBC150074AA30 /* PlayfairDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9C92132C1DBC150074AA30 /* PlayfairDisplay-Bold.ttf */; };
+		CA9C92162C1DBCA70074AA30 /* PlayfairDisplay-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA9C92152C1DBCA70074AA30 /* PlayfairDisplay-Medium.ttf */; };
+		CA9C92182C1DC23C0074AA30 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92172C1DC23C0074AA30 /* NoteCell.swift */; };
+		CA9C921A2C1EEB070074AA30 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C92192C1EEB070074AA30 /* CheckBoxView.swift */; };
+		CA9C921C2C1EEE560074AA30 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C921B2C1EEE560074AA30 /* OptionView.swift */; };
+		CA9C921E2C1F19B80074AA30 /* NoteNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9C921D2C1F19B80074AA30 /* NoteNewCell.swift */; };
+		CAD02C502C21BAAF00336592 /* EmotionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD02C4F2C21BAAF00336592 /* EmotionListView.swift */; };
+		CAD02C522C21BAC200336592 /* EmotionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD02C512C21BAC200336592 /* EmotionListViewController.swift */; };
+		CAD02C542C21BBE800336592 /* EmotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD02C532C21BBE800336592 /* EmotionCell.swift */; };
+		CADFB6532C1B406000632CEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADFB6522C1B406000632CEB /* AppDelegate.swift */; };
+		CADFB6552C1B406000632CEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADFB6542C1B406000632CEB /* SceneDelegate.swift */; };
+		CADFB65D2C1B406000632CEB /* DearDiary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CADFB65B2C1B406000632CEB /* DearDiary.xcdatamodeld */; };
+		CADFB65F2C1B406100632CEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CADFB65E2C1B406100632CEB /* Assets.xcassets */; };
+		CADFB6622C1B406100632CEB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CADFB6612C1B406100632CEB /* Base */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CA0938D52C25EF7F00FA6BC5 /* NewEmotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmotionView.swift; sourceTree = "<group>"; };
+		CA0938DA2C26CDDD00FA6BC5 /* NewEmotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmotionViewController.swift; sourceTree = "<group>"; };
+		CA0938DC2C26D3B900FA6BC5 /* NewEmotionDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmotionDescriptionView.swift; sourceTree = "<group>"; };
+		CA0938DE2C26D6F200FA6BC5 /* NewEmotionDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmotionDescriptionViewController.swift; sourceTree = "<group>"; };
+		CA0938E02C26E5E900FA6BC5 /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		CA0938EA2C28583100FA6BC5 /* OldNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldNoteView.swift; sourceTree = "<group>"; };
+		CA0938EC2C28596100FA6BC5 /* OldNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldNoteViewController.swift; sourceTree = "<group>"; };
+		CA0938EE2C286A6A00FA6BC5 /* ParametersEmotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParametersEmotionViewController.swift; sourceTree = "<group>"; };
+		CA0938F02C286A9A00FA6BC5 /* ParametersEmotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParametersEmotionView.swift; sourceTree = "<group>"; };
+		CA0938F22C28739700FA6BC5 /* EmotionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionChartView.swift; sourceTree = "<group>"; };
+		CA0938F42C2876AB00FA6BC5 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
+		CA0938F62C28775000FA6BC5 /* EmotionChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionChartViewController.swift; sourceTree = "<group>"; };
+		CA0938FC2C28B31300FA6BC5 /* EmotionNameChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionNameChartView.swift; sourceTree = "<group>"; };
+		CA4FD7AD2C29A5BB0078DD9B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		CA6201B22C3AF61F00202F7A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		CA74B7F62C34796300BC7E64 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CA74B7F92C347A5D00BC7E64 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		CA74B7FC2C34AA5400BC7E64 /* Emotion+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emotion+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CA74B8032C393AB500BC7E64 /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
+		CA8BA73A2C3983A9004696AA /* PositiveAffirmations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositiveAffirmations.swift; sourceTree = "<group>"; };
+		CA8BA73E2C3994E7004696AA /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		CA8BA7412C39958A004696AA /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		CA9C91EF2C1D86A80074AA30 /* PlayfairDisplay-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Italic.ttf"; sourceTree = "<group>"; };
+		CA9C91FC2C1D89D20074AA30 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		CA9C91FE2C1D8B550074AA30 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		CA9C92002C1D8C6F0074AA30 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		CA9C92022C1D8C8C0074AA30 /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
+		CA9C92042C1D8CD30074AA30 /* QuestionaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionaryViewController.swift; sourceTree = "<group>"; };
+		CA9C92062C1D8CE50074AA30 /* QuestionaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionaryView.swift; sourceTree = "<group>"; };
+		CA9C92112C1DAD080074AA30 /* EmotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionView.swift; sourceTree = "<group>"; };
+		CA9C92132C1DBC150074AA30 /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		CA9C92152C1DBCA70074AA30 /* PlayfairDisplay-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Medium.ttf"; sourceTree = "<group>"; };
+		CA9C92172C1DC23C0074AA30 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
+		CA9C92192C1EEB070074AA30 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
+		CA9C921B2C1EEE560074AA30 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
+		CA9C921D2C1F19B80074AA30 /* NoteNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteNewCell.swift; sourceTree = "<group>"; };
+		CAD02C4F2C21BAAF00336592 /* EmotionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionListView.swift; sourceTree = "<group>"; };
+		CAD02C512C21BAC200336592 /* EmotionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionListViewController.swift; sourceTree = "<group>"; };
+		CAD02C532C21BBE800336592 /* EmotionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionCell.swift; sourceTree = "<group>"; };
+		CADFB64F2C1B406000632CEB /* DearDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DearDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CADFB6522C1B406000632CEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CADFB6542C1B406000632CEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CADFB65C2C1B406000632CEB /* DearDiary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DearDiary.xcdatamodel; sourceTree = "<group>"; };
+		CADFB65E2C1B406100632CEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CADFB6612C1B406100632CEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CADFB6632C1B406100632CEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CADFB64C2C1B406000632CEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA9C920E2C1DA1F30074AA30 /* PinLayout in Frameworks */,
+				CA74B8072C393C5900BC7E64 /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CA0938D22C25EF0E00FA6BC5 /* EmotionAnalyzer */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938F92C28B29400FA6BC5 /* Result */,
+				CA0938F82C28B28900FA6BC5 /* Analyzer */,
+			);
+			path = EmotionAnalyzer;
+			sourceTree = "<group>";
+		};
+		CA0938D32C25EF6200FA6BC5 /* NewEmotion */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938D92C26CDCA00FA6BC5 /* ViewController */,
+				CA0938D42C25EF7000FA6BC5 /* View */,
+			);
+			path = NewEmotion;
+			sourceTree = "<group>";
+		};
+		CA0938D42C25EF7000FA6BC5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938D52C25EF7F00FA6BC5 /* NewEmotionView.swift */,
+				CA0938DC2C26D3B900FA6BC5 /* NewEmotionDescriptionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA0938D92C26CDCA00FA6BC5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938DA2C26CDDD00FA6BC5 /* NewEmotionViewController.swift */,
+				CA0938DE2C26D6F200FA6BC5 /* NewEmotionDescriptionViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CA0938F82C28B28900FA6BC5 /* Analyzer */ = {
+			isa = PBXGroup;
+			children = (
+				CAD02C4D2C21BA6600336592 /* View */,
+				CAD02C4E2C21BA7A00336592 /* ViewController */,
+			);
+			path = Analyzer;
+			sourceTree = "<group>";
+		};
+		CA0938F92C28B29400FA6BC5 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938FB2C28B2A500FA6BC5 /* ViewController */,
+				CA0938FA2C28B2A000FA6BC5 /* View */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		CA0938FA2C28B2A000FA6BC5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938F22C28739700FA6BC5 /* EmotionChartView.swift */,
+				CA0938F42C2876AB00FA6BC5 /* CircularProgressView.swift */,
+				CA0938FC2C28B31300FA6BC5 /* EmotionNameChartView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA0938FB2C28B2A500FA6BC5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938F62C28775000FA6BC5 /* EmotionChartViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CA4FD7AC2C29A5620078DD9B /* BASE */ = {
+			isa = PBXGroup;
+			children = (
+				CA4FD7AD2C29A5BB0078DD9B /* BaseNavigationController.swift */,
+				CA74B7F92C347A5D00BC7E64 /* CoreDataManager.swift */,
+				CA74B8032C393AB500BC7E64 /* BasePresenter.swift */,
+				CA8BA73A2C3983A9004696AA /* PositiveAffirmations.swift */,
+				CA6201B22C3AF61F00202F7A /* Extension.swift */,
+			);
+			path = BASE;
+			sourceTree = "<group>";
+		};
+		CA8BA73C2C399449004696AA /* Questionary */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C91F72C1D89590074AA30 /* ViewController */,
+				CA9C91F62C1D89520074AA30 /* View */,
+			);
+			path = Questionary;
+			sourceTree = "<group>";
+		};
+		CA8BA73D2C39947F004696AA /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CA8BA7432C399596004696AA /* ViewController */,
+				CA8BA7402C399571004696AA /* View */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		CA8BA7402C399571004696AA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA8BA73E2C3994E7004696AA /* OnboardingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA8BA7432C399596004696AA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA8BA7412C39958A004696AA /* OnboardingViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CA9C91F12C1D886E0074AA30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				CAD02C4C2C21BA5B00336592 /* Emotions */,
+				CA9C91F52C1D89300074AA30 /* Main */,
+				CA9C91F42C1D891B0074AA30 /* Note */,
+				CA9C91F32C1D89000074AA30 /* Onboarding */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		CA9C91F22C1D88800074AA30 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938E02C26E5E900FA6BC5 /* PlayfairDisplay-Regular.ttf */,
+				CA9C92152C1DBCA70074AA30 /* PlayfairDisplay-Medium.ttf */,
+				CA9C92132C1DBC150074AA30 /* PlayfairDisplay-Bold.ttf */,
+				CA9C91EF2C1D86A80074AA30 /* PlayfairDisplay-Italic.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		CA9C91F32C1D89000074AA30 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CA8BA73D2C39947F004696AA /* Onboarding */,
+				CA8BA73C2C399449004696AA /* Questionary */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		CA9C91F42C1D891B0074AA30 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C91F92C1D89850074AA30 /* ViewController */,
+				CA9C91F82C1D897F0074AA30 /* View */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		CA9C91F52C1D89300074AA30 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C91FB2C1D89920074AA30 /* ViewController */,
+				CA9C91FA2C1D898C0074AA30 /* View */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		CA9C91F62C1D89520074AA30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C92062C1D8CE50074AA30 /* QuestionaryView.swift */,
+				CA9C92192C1EEB070074AA30 /* CheckBoxView.swift */,
+				CA9C921B2C1EEE560074AA30 /* OptionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA9C91F72C1D89590074AA30 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C92042C1D8CD30074AA30 /* QuestionaryViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CA9C91F82C1D897F0074AA30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C92002C1D8C6F0074AA30 /* NoteView.swift */,
+				CA0938EA2C28583100FA6BC5 /* OldNoteView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA9C91F92C1D89850074AA30 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C92022C1D8C8C0074AA30 /* NoteViewController.swift */,
+				CA0938EC2C28596100FA6BC5 /* OldNoteViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CA9C91FA2C1D898C0074AA30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C91FC2C1D89D20074AA30 /* MainView.swift */,
+				CA9C92112C1DAD080074AA30 /* EmotionView.swift */,
+				CA9C92172C1DC23C0074AA30 /* NoteCell.swift */,
+				CA9C921D2C1F19B80074AA30 /* NoteNewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA9C91FB2C1D89920074AA30 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CA9C91FE2C1D8B550074AA30 /* MainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CAD02C4C2C21BA5B00336592 /* Emotions */ = {
+			isa = PBXGroup;
+			children = (
+				CA0938D32C25EF6200FA6BC5 /* NewEmotion */,
+				CA0938D22C25EF0E00FA6BC5 /* EmotionAnalyzer */,
+			);
+			path = Emotions;
+			sourceTree = "<group>";
+		};
+		CAD02C4D2C21BA6600336592 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAD02C4F2C21BAAF00336592 /* EmotionListView.swift */,
+				CAD02C532C21BBE800336592 /* EmotionCell.swift */,
+				CA0938F02C286A9A00FA6BC5 /* ParametersEmotionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAD02C4E2C21BA7A00336592 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CAD02C512C21BAC200336592 /* EmotionListViewController.swift */,
+				CA0938EE2C286A6A00FA6BC5 /* ParametersEmotionViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CADFB6462C1B405F00632CEB = {
+			isa = PBXGroup;
+			children = (
+				CA74B7FC2C34AA5400BC7E64 /* Emotion+CoreDataProperties.swift */,
+				CA74B7F62C34796300BC7E64 /* Note+CoreDataProperties.swift */,
+				CADFB6512C1B406000632CEB /* DearDiary */,
+				CADFB6502C1B406000632CEB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CADFB6502C1B406000632CEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CADFB64F2C1B406000632CEB /* DearDiary.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CADFB6512C1B406000632CEB /* DearDiary */ = {
+			isa = PBXGroup;
+			children = (
+				CA4FD7AC2C29A5620078DD9B /* BASE */,
+				CA9C91F22C1D88800074AA30 /* Fonts */,
+				CA9C91F12C1D886E0074AA30 /* Screens */,
+				CADFB6522C1B406000632CEB /* AppDelegate.swift */,
+				CADFB6542C1B406000632CEB /* SceneDelegate.swift */,
+				CADFB65E2C1B406100632CEB /* Assets.xcassets */,
+				CADFB6602C1B406100632CEB /* LaunchScreen.storyboard */,
+				CADFB6632C1B406100632CEB /* Info.plist */,
+				CADFB65B2C1B406000632CEB /* DearDiary.xcdatamodeld */,
+			);
+			path = DearDiary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CADFB64E2C1B406000632CEB /* DearDiary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CADFB6662C1B406100632CEB /* Build configuration list for PBXNativeTarget "DearDiary" */;
+			buildPhases = (
+				CADFB64B2C1B406000632CEB /* Sources */,
+				CADFB64C2C1B406000632CEB /* Frameworks */,
+				CADFB64D2C1B406000632CEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DearDiary;
+			packageProductDependencies = (
+				CA9C920D2C1DA1F30074AA30 /* PinLayout */,
+				CA74B8062C393C5900BC7E64 /* Alamofire */,
+			);
+			productName = DearDiary;
+			productReference = CADFB64F2C1B406000632CEB /* DearDiary.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CADFB6472C1B405F00632CEB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					CADFB64E2C1B406000632CEB = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = CADFB64A2C1B405F00632CEB /* Build configuration list for PBXProject "DearDiary" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CADFB6462C1B405F00632CEB;
+			packageReferences = (
+				CA9C920C2C1DA1F30074AA30 /* XCRemoteSwiftPackageReference "PinLayout" */,
+				CA74B8052C393C5900BC7E64 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
+			productRefGroup = CADFB6502C1B406000632CEB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CADFB64E2C1B406000632CEB /* DearDiary */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CADFB64D2C1B406000632CEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA0938E12C26E5EA00FA6BC5 /* PlayfairDisplay-Regular.ttf in Resources */,
+				CADFB65F2C1B406100632CEB /* Assets.xcassets in Resources */,
+				CA9C92162C1DBCA70074AA30 /* PlayfairDisplay-Medium.ttf in Resources */,
+				CA9C92142C1DBC150074AA30 /* PlayfairDisplay-Bold.ttf in Resources */,
+				CADFB6622C1B406100632CEB /* Base in Resources */,
+				CA9C91F02C1D86A80074AA30 /* PlayfairDisplay-Italic.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CADFB64B2C1B406000632CEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAD02C522C21BAC200336592 /* EmotionListViewController.swift in Sources */,
+				CA0938F52C2876AB00FA6BC5 /* CircularProgressView.swift in Sources */,
+				CA0938F12C286A9A00FA6BC5 /* ParametersEmotionView.swift in Sources */,
+				CA0938DF2C26D6F200FA6BC5 /* NewEmotionDescriptionViewController.swift in Sources */,
+				CA0938FD2C28B31400FA6BC5 /* EmotionNameChartView.swift in Sources */,
+				CA9C92122C1DAD080074AA30 /* EmotionView.swift in Sources */,
+				CA0938ED2C28596100FA6BC5 /* OldNoteViewController.swift in Sources */,
+				CA0938DD2C26D3B900FA6BC5 /* NewEmotionDescriptionView.swift in Sources */,
+				CA4FD7AE2C29A5BB0078DD9B /* BaseNavigationController.swift in Sources */,
+				CA0938EB2C28583100FA6BC5 /* OldNoteView.swift in Sources */,
+				CA9C92032C1D8C8C0074AA30 /* NoteViewController.swift in Sources */,
+				CA0938DB2C26CDDD00FA6BC5 /* NewEmotionViewController.swift in Sources */,
+				CA9C921E2C1F19B80074AA30 /* NoteNewCell.swift in Sources */,
+				CA6201B32C3AF61F00202F7A /* Extension.swift in Sources */,
+				CA74B8042C393AB500BC7E64 /* BasePresenter.swift in Sources */,
+				CA9C92182C1DC23C0074AA30 /* NoteCell.swift in Sources */,
+				CA74B7FA2C347A5D00BC7E64 /* CoreDataManager.swift in Sources */,
+				CADFB6532C1B406000632CEB /* AppDelegate.swift in Sources */,
+				CA9C91FD2C1D89D20074AA30 /* MainView.swift in Sources */,
+				CA0938D62C25EF7F00FA6BC5 /* NewEmotionView.swift in Sources */,
+				CA9C92072C1D8CE50074AA30 /* QuestionaryView.swift in Sources */,
+				CA74B7FE2C34AA5400BC7E64 /* Emotion+CoreDataProperties.swift in Sources */,
+				CA0938EF2C286A6A00FA6BC5 /* ParametersEmotionViewController.swift in Sources */,
+				CA8BA73B2C3983A9004696AA /* PositiveAffirmations.swift in Sources */,
+				CA9C92052C1D8CD30074AA30 /* QuestionaryViewController.swift in Sources */,
+				CA0938F72C28775000FA6BC5 /* EmotionChartViewController.swift in Sources */,
+				CAD02C502C21BAAF00336592 /* EmotionListView.swift in Sources */,
+				CA8BA73F2C3994E7004696AA /* OnboardingView.swift in Sources */,
+				CA9C921A2C1EEB070074AA30 /* CheckBoxView.swift in Sources */,
+				CA9C921C2C1EEE560074AA30 /* OptionView.swift in Sources */,
+				CA9C92012C1D8C6F0074AA30 /* NoteView.swift in Sources */,
+				CADFB6552C1B406000632CEB /* SceneDelegate.swift in Sources */,
+				CA8BA7422C39958A004696AA /* OnboardingViewController.swift in Sources */,
+				CADFB65D2C1B406000632CEB /* DearDiary.xcdatamodeld in Sources */,
+				CA74B7F82C34796300BC7E64 /* Note+CoreDataProperties.swift in Sources */,
+				CA0938F32C28739700FA6BC5 /* EmotionChartView.swift in Sources */,
+				CA9C91FF2C1D8B550074AA30 /* MainViewController.swift in Sources */,
+				CAD02C542C21BBE800336592 /* EmotionCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CADFB6602C1B406100632CEB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CADFB6612C1B406100632CEB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CADFB6642C1B406100632CEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CADFB6652C1B406100632CEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CADFB6672C1B406100632CEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8U7D8W8J2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DearDiary/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dear Diary";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alyonamax.DearDiary;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CADFB6682C1B406100632CEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8U7D8W8J2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DearDiary/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dear Diary";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alyonamax.DearDiary;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CADFB64A2C1B405F00632CEB /* Build configuration list for PBXProject "DearDiary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CADFB6642C1B406100632CEB /* Debug */,
+				CADFB6652C1B406100632CEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CADFB6662C1B406100632CEB /* Build configuration list for PBXNativeTarget "DearDiary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CADFB6672C1B406100632CEB /* Debug */,
+				CADFB6682C1B406100632CEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CA74B8052C393C5900BC7E64 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		CA9C920C2C1DA1F30074AA30 /* XCRemoteSwiftPackageReference "PinLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/layoutBox/PinLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.10.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CA74B8062C393C5900BC7E64 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA74B8052C393C5900BC7E64 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		CA9C920D2C1DA1F30074AA30 /* PinLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA9C920C2C1DA1F30074AA30 /* XCRemoteSwiftPackageReference "PinLayout" */;
+			productName = PinLayout;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		CADFB65B2C1B406000632CEB /* DearDiary.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CADFB65C2C1B406000632CEB /* DearDiary.xcdatamodel */,
+			);
+			currentVersion = CADFB65C2C1B406000632CEB /* DearDiary.xcdatamodel */;
+			path = DearDiary.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = CADFB6472C1B405F00632CEB /* Project object */;
+}
