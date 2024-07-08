@@ -75,14 +75,14 @@ fun MyEmotionsScreen(navController: NavHostController) {
                     PrevEmotionContainer(text1 = emotion.name, text2 = "Prompt", text3 = emotion.date)
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
-
-            CustomButton(buttonState = ButtonState(
-                type = ButtonType.PRIMARY,
-                text = "Analyse",
-                isActive = true,
-                onClickAction = { navController.navigate("my_emotions_before_analytics") }
-            ))
+//            Spacer(modifier = Modifier.height(24.dp))
+//
+//            CustomButton(buttonState = ButtonState(
+//                type = ButtonType.PRIMARY,
+//                text = "Analyse",
+//                isActive = true,
+//                onClickAction = { navController.navigate("my_emotions_before_analytics") }
+//            ))
         }
     }
 }
