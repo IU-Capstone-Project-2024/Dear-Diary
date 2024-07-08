@@ -51,7 +51,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("com.google.accompanist:accompanist-coil:0.15.0")
     implementation ("com.squareup.moshi:moshi:1.12.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.2")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.2")

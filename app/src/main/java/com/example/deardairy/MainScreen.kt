@@ -253,9 +253,10 @@ fun MainScreen(navController: NavHostController) {
                                 navController = navController,
                                 boxHeight = 60.dp,
                                 text1 = firstNote.name,
-                                text2 = "null",
+//                                text2 = "null",
                                 text3 = firstNote.date ?: "No date",
-                                noteId = firstNote.NoteId
+                                noteId = firstNote.NoteId,
+                                imageUrl = firstNote.coverUrl
                             )
                         }
                     }
@@ -286,9 +287,11 @@ fun MainScreen(navController: NavHostController) {
                                     navController = navController,
                                     boxHeight = 60.dp,
                                     text1 = note.name,
-                                    text2 = nc.toString(),
+//                                    text2 = nc.toString(),
                                     text3 = note.date ?: "No date",
-                                    noteId = note.NoteId
+                                    noteId = note.NoteId,
+                                    imageUrl = note.coverUrl
+
                                 )
                                 nc -= 1
                             }
@@ -307,9 +310,10 @@ fun MainScreen(navController: NavHostController) {
                                 navController = navController,
                                 boxHeight = 60.dp,
                                 text1 = note.name,
-                                text2 = nc.toString(),
                                 text3 = note.date ?: "No date",
-                                noteId = note.NoteId
+                                noteId = note.NoteId,
+                                imageUrl = note.coverUrl
+
                             )
                         }
                     }

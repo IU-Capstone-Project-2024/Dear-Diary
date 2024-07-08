@@ -19,7 +19,8 @@ data class Note(
     var name: String = "My note",
     var text: String,
     var date: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),  // Текущая дата
-    var coverId: Long = (0..100).random().toLong()
+    var coverId: String?,
+    var coverUrl: String?
 )
 
 @Dao

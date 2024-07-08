@@ -32,28 +32,32 @@ fun NewEmotionInputScreen(navController: NavHostController) {
         modifier = Modifier
             .background(color = BackgroundColor)
             .fillMaxSize()
-            .padding(horizontal = 21.dp)
+//            .padding(horizontal = 21.dp)
             .padding(bottom = 15.dp)
     ) {
         TopBar(title = "New Emotion", navController = navController)
-
-        // EmotionBox with additional elements
-        EmotionBox(
-            showAdditionalInfo = true,
-            showButton = true,
-            textWidth = 169.dp,
-            pictureWidth = 125.dp,
-            pictureHeight = 125.dp,
-            titleSize = 20f,
-            descriptionSize = 15f,
-            additionalInfoText = "Describe what you feel and Diary will tell what emotion it is",
-            onButtonClick = { inputValue ->
-                Log.d("NewEmotionInputScreen", "Button clicked with input: $inputValue")
-                navController.navigate("loading_screen/$inputValue/new_emotion/another_screen")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 21.dp) // Padding for EmotionBox
+        ) {
+            // EmotionBox with additional elements
+            EmotionBox(
+                showAdditionalInfo = true,
+                showButton = true,
+                textWidth = 169.dp,
+                pictureWidth = 125.dp,
+                pictureHeight = 125.dp,
+                titleSize = 20f,
+                descriptionSize = 15f,
+                additionalInfoText = "Describe what you feel and Diary will tell what emotion it is",
+                onButtonClick = { inputValue ->
+                    Log.d("NewEmotionInputScreen", "Button clicked with input: $inputValue")
+                    navController.navigate("loading_screen/$inputValue/new_emotion/another_screen")
 
 
 //                inputValue ->
-                // Navigate to NewEmotionScreen with input value
+                    // Navigate to NewEmotionScreen with input value
 //                navController.navigate("new_emotion")
 //                {
 //                    // Pass inputValue as an argument
@@ -61,10 +65,9 @@ fun NewEmotionInputScreen(navController: NavHostController) {
 //                        putString("inputValue", inputValue)
 //                    }
 //                }
-            }
-        )
-
-
+                }
+            )
+        }
     }
 }
 

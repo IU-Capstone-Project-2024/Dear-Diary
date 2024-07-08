@@ -47,10 +47,11 @@ fun LoadingScreen(onScreenTap: () -> Unit = {}) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.icon), // ваше изображение
+                painter = painterResource(id = R.drawable.dd), // ваше изображение
                 contentDescription = null,
                 modifier = Modifier
-                    .size(90.dp) // задаем размер иконки
+                    .size(90.dp), // задаем размер иконки
+                tint = Color.Unspecified
             )
             BasicText(
                 text = "Dear Diary",

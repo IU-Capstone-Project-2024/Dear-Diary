@@ -52,11 +52,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.deardairy.R
 import androidx.compose.runtime.*
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.compose.LocalImageLoader
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
+import com.google.accompanist.coil.rememberCoilPainter
+
 
 @Composable
 fun PrimaryStyledContainer(
@@ -253,10 +260,9 @@ fun CustomBoxWithTexts(
     navController: NavHostController,
     boxHeight: Dp,
     text1: String,
-    text2: String,
     text3: String,
-    noteId: Long // Новый параметр для ID записки
-
+    noteId: Long, // Новый параметр для ID записки
+    imageUrl: String? // Новый параметр для ссылки на изображение
 ) {
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
@@ -273,7 +279,6 @@ fun CustomBoxWithTexts(
                 Log.d("PrevNoteScreen", "noteId: $noteId")
                 navController.navigate("prev_note_screen/${noteId}")
                        },
-//        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.Start
     ) {
         Box(
@@ -281,15 +286,20 @@ fun CustomBoxWithTexts(
                 .fillMaxWidth()
                 .height(cardHeight / 1.6f)
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-                .background(color = DisabledButtonColor)
-        )
+//                .background(color = DisabledButtonColor)
+        ){
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = noteId.toString(),
+                contentScale = ContentScale.Crop
+            )
+        }
         Spacer(modifier = Modifier.height(4.dp))
 
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .padding(horizontal = 15.dp)
-//                .padding(bottom = 10.dp)
         ) {
 
             BasicText(
@@ -301,16 +311,6 @@ fun CustomBoxWithTexts(
                     color = DarkBlueColor
                 )
             )
-//            BasicText(
-//                text = text2,
-//                style = TextStyle(
-//                    fontFamily = playfairDisplayFontFamily,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 15.sp,
-//                    color = DarkBlueColor
-//                )
-//            )
-
             BasicText(
                 text = text3, style = TextStyle(
                     fontFamily = playfairDisplayFontFamily,

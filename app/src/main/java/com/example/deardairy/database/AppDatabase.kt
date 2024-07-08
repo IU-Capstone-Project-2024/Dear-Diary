@@ -17,6 +17,12 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
+object MigrationFrom1To2 : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE Note ADD COLUMN coverId TEXT")
+    }
+}
+
 @Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -145,6 +151,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 ).fallbackToDestructiveMigration()
+                    .addMigrations(MigrationFrom1To2)
                     .build()
                 INSTANCE = instance
                 return instance

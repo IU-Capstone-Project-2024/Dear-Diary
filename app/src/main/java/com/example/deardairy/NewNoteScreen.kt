@@ -1,6 +1,7 @@
 package com.example.deardairy
 
 import android.os.Build
+import androidx.compose.ui.graphics.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -47,13 +49,18 @@ import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.deardairy.database.AppDatabase
 import com.example.deardairy.database.NoteDatabase
 import com.example.deardairy.database.UserDatabase
+import com.example.deardairy.network.ApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -70,6 +77,14 @@ fun NewNoteScreen(navController: NavHostController) {
     var inputValue by remember { mutableStateOf("") }
     var isTextFieldFocused by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val apiClient = ApiClient()
+
+
+    Box(
+        modifier = Modifier
+            .background(color = BackgroundColor)
+            .fillMaxSize()
+    ) {
 
     Column(modifier = Modifier
         .background(color = BackgroundColor)
@@ -93,18 +108,13 @@ fun NewNoteScreen(navController: NavHostController) {
                         fontWeight = FontWeight.Normal,
                         fontSize = 15.sp,
                         color = DarkBlueColor
-                    ), modifier = Modifier.padding(bottom = 15.dp).width(250.dp))
-
-//                  val additionalInfoText =  "Start writing about how you feel \n" +
-//                            "or get any help from Diary"
-
+                    ), modifier = Modifier
+                        .padding(bottom = 15.dp)
+                        .width(250.dp))
                     BasicTextField(
                         value = inputValue,
                         onValueChange = { newInputValue: String ->
                             inputValue = newInputValue
-//                            if (newInputValue.isEmpty()) {
-//                                inputValue = additionalInfoText
-//                            }
                         },
                         textStyle = TextStyle(
                             fontFamily = playfairDisplayFontFamily,
@@ -112,7 +122,9 @@ fun NewNoteScreen(navController: NavHostController) {
                             fontSize = 15.sp,
                             color = BackgroundColor
                         ),
-                        modifier = Modifier.fillMaxSize().width(250.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .width(250.dp),
                         interactionSource = remember { MutableInteractionSource() }
                     )
 
@@ -124,29 +136,44 @@ fun NewNoteScreen(navController: NavHostController) {
                         text = "Save my note",
                         isActive = true,
                         onClickAction = {
-
-                            val newNote = Note(
-                                name = "New Note",  // Your logic for the note name
-                                text = inputValue,
-                                date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-                            )
                             CoroutineScope(Dispatchers.IO).launch {
-                                val noteDatabase = NoteDatabase.getDatabase(context)
-                                Log.d("NewNote", "before insert new note")
-                                noteDatabase.noteDao().insert(newNote)
-                                Log.d("NewNote", "after insert new note")
-                                val userDatabase = UserDatabase.getDatabase(context)
-                                Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
                                 try {
+                                    val noteCoverResponse = apiClient.saveNoteCover("")
+                                    val coverId = noteCoverResponse?.imageId ?: ""
+                                    val coverUrl = noteCoverResponse?.imageUrl ?: ""
+                                    Log.d("NewNote", "coverId: ${coverId}")
+
+
+                                    val noteTitleResponse = apiClient.getNoteTitle(inputValue)
+                                    val noteTitle = noteTitleResponse?.title ?: "New Note"
+                                    Log.d("NewNote", "note Title: ${noteTitle}")
+
+
+                                    val newNote = Note(
+                                        name = noteTitle,  // Your logic for the note name
+                                        text = inputValue,
+                                        date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                                        coverId = coverId,
+                                        coverUrl = coverUrl
+                                    )
+
+                                    val noteDatabase = NoteDatabase.getDatabase(context)
+                                    Log.d("NewNote", "before insert new note")
+                                    noteDatabase.noteDao().insert(newNote)
+                                    Log.d("NewNote", "after insert new note")
+                                    val userDatabase = UserDatabase.getDatabase(context)
+                                    Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
                                     var true_count = noteDatabase.noteDao().getNotesCount()
                                     userDatabase.userDao().updateNotesCounter(true_count)
-
-                                } finally {
                                     var count = userDatabase.userDao().getNotesCounter()
                                     Log.d("NewNote", "Notes counter: $count")
-                                }
-                                withContext(Dispatchers.Main) {
-                                    navController.navigate("main_screen")
+
+                                    withContext(Dispatchers.Main) {
+                                        navController.navigate("main_screen")
+                                    }
+                                }catch (e: Exception) {
+                                    // Handle exception
+                                    e.printStackTrace()
                                 }
                             }
                         }
@@ -155,7 +182,19 @@ fun NewNoteScreen(navController: NavHostController) {
             }
         }
     }
-        if (overlayVisible) {
+        Image(
+            painter = painterResource(id = R.drawable.help),
+            contentDescription = "Help Icon",
+            modifier = Modifier
+                .height(136.dp)
+                .clickable {
+                }
+                .padding(horizontal = 35.dp)
+                .offset(y = 116.dp)
+                .align(Alignment.TopEnd),
+            contentScale = ContentScale.Fit
+        )
+    if (overlayVisible) {
             Overlay(
                 title = "Your notes will not be saved.\n" +
                         "Are you sure?",
@@ -168,7 +207,7 @@ fun NewNoteScreen(navController: NavHostController) {
                 }
             )
         }
-    }
+}}
 
 
 
