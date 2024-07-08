@@ -109,7 +109,6 @@ fun PrevNoteScreen(navController: NavHostController, noteId: Long) {
                             fontWeight = FontWeight.Normal,
                             color = DarkBlueColor
                         ),
-            //                    modifier = Modifier.padding(bottom = 16.dp)
                     )
                 }
             }
@@ -126,9 +125,18 @@ fun PrevNoteScreen(navController: NavHostController, noteId: Long) {
             title = "Your note will be deleted.\n" +
                     "Are you sure?",
             onConfirm = {
-                // Perform navigation or action on confirm
-                navController.navigate("main_screen")
-                overlayVisible = false // Hide overlay
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val noteDatabase = NoteDatabase.getDatabase(context)
+                        noteDatabase.noteDao().deleteNoteById(noteId)
+                        withContext(Dispatchers.Main) {
+                            navController.navigate("main_screen")
+                            overlayVisible = false // Hide overlay
+                        }
+                    } catch (e: Exception) {
+                        Log.e("PrevNoteScreen", "Error deleting note", e)
+                    }
+                }
             },
             onCancel = {
                 overlayVisible = false // Hide overlay on cancel
