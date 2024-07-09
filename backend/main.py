@@ -1,12 +1,13 @@
 import datetime
 import random
-from typing import Annotated
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Body
-from pydantic import BaseModel, Field
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+from data_models import NoteRecord
 from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note, generate_note_title
-from utils import sanityze_text_letters_only, sanityze_text_no_special_chars
+from utils import sanityze_text_letters_only, sanityze_text_no_special_chars, note_records_to_dialog
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import storage
@@ -58,7 +59,26 @@ async def get_status() -> StatusResponse:
 
 
 class RespondToNoteBody(BaseModel):
-    note: str
+    note: list[NoteRecord]
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "note": [{
+                        "text": "i have exams and a lot of stress. What do i do?",
+                        "agent": "user"
+                    }, {
+                        "text": "breath in and out 5 times. did it help?",
+                        "agent": "bot"
+                    }, {
+                        "text": "no, i am still stressed. what else can i do?",
+                        "agent": "user"
+                    }]
+                }
+            ]
+        }
+    }
 
 
 class RespondToNoteResponse(BaseModel):
@@ -69,6 +89,7 @@ class RespondToNoteResponse(BaseModel):
 async def respond_to_note(item: RespondToNoteBody) -> RespondToNoteResponse:
     response = generate_response_to_note(item.note)
     response = sanityze_text_no_special_chars(response)
+    response = response.strip()
     return RespondToNoteResponse(answer=response)
 
 

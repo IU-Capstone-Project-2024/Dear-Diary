@@ -1,16 +1,19 @@
 import os
 import requests
 
+from utils import last_user_text_from_note
+from data_models import NoteRecord
 
 API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_KEY')}"}
 
 
-def generate_response_to_note(user_note):
-    raw_strategy = pick_response_strategy(user_note)
+def generate_response_to_note(note: list[NoteRecord]):
+    last_user_text = last_user_text_from_note(note)
+    raw_strategy = pick_response_strategy(last_user_text)
     raw_strategy = raw_strategy.strip().lower()
 
-    print(f"Strategy: {raw_strategy}")
+    # print(f"Strategy: {raw_strategy}")
 
     scores = [
         raw_strategy.find("questions"),
@@ -26,6 +29,9 @@ def generate_response_to_note(user_note):
             min_score = score
             best_strategy_index = i
 
+    # temp implementation
+    user_note = last_user_text
+
     if best_strategy_index == 0:
         return respond_questions(user_note)
     elif best_strategy_index == 1:
@@ -40,20 +46,18 @@ def generate_response_to_note(user_note):
 
 
 def pick_response_strategy(user_note):
-    instruction = f"""You are a helpful assistant picking the right response strategy.
-    You are given a note containing person's thoughts.
-    Your response must contain only a single word: the name of the response strategy.
-    Options:
-    1. Answer 'Questions' when user is unsure about their feelings and needs help processing them.
-    2. Answer 'Support' when user is feeling down and needs reassurance.
-    3. Answer 'Advice' when user is looking for guidance on how to handle a situation.
-    4. Answer 'Empathy' when user is feeling overwhelmed and needs to feel understood.""".replace("\n", " ")
+    instruction = f"""Pick the best response strategy for the note "{user_note}" out of 4 options:
+    1. 'Questions' when user is unsure about their feelings and needs help processing them.
+    2. 'Support' when user is feeling down and needs reassurance.
+    3. 'Advice' when user is looking for guidance on how to handle a situation.
+    4. 'Empathy' when user is feeling overwhelmed and needs to feel understood."""
 
     payload = {
-        "inputs": f"{instruction} The note: \"{user_note}\". Strategy: ",
+        "inputs": f"{instruction}\nStrategy: \"",
         "parameters": {
-            "temperature": 0.5,
+            "temperature": 0.6,
             "return_full_text": False,
+            "max_new_tokens": 10,
         },
     }
 
@@ -67,7 +71,7 @@ def process_note_template(instruction, user_note):
     clean_instruction = instruction.replace("\n", " ")
 
     payload = {
-        "inputs": f"{clean_instruction} The note: \"{user_note}\"",
+        "inputs": f"{clean_instruction} The note: \"{user_note}\" Here is my response: ",
         "parameters": {
             "temperature": 0.8,
             "return_full_text": False,
