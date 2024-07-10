@@ -122,9 +122,15 @@ class GetEmotionResponse(BaseModel):
 @app.post("/emotion")
 async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
     emotion = generate_emotion(item.note)
-    emotion = sanityze_text_letters_only(emotion)
 
-    recommendation = generate_recommendation_for_emotion(emotion).strip()
+    clean_emotion = emotion
+    # try to find text in quotes
+    if '"' in emotion:
+        clean_emotion = emotion.split('"')[1]
+
+    clean_emotion = clean_emotion.lower().capitalize()
+
+    recommendation = generate_recommendation_for_emotion(clean_emotion).strip()
     recommendation = sanityze_text_no_special_chars(recommendation).strip()
 
-    return GetEmotionResponse(emotion=emotion, recommendation=recommendation)
+    return GetEmotionResponse(emotion=clean_emotion, recommendation=recommendation)
