@@ -10,13 +10,19 @@ def last_user_text_from_note(note_records: list[NoteRecord]) -> str | None:
     return None
 
 
-def note_records_to_dialog(note_records: list[NoteRecord], skip_last_user_text=False) -> str:
+def note_records_to_dialog(note_records: list[NoteRecord], skip_last_record=False) -> str:
+    records = list(note_records)
+
+    # Used when dialog is needed only for context and the last record is provided separately
+    if skip_last_record:
+        records = records[:-1]
+
     dialog = ""
-    for note_record in note_records:
+    for note_record in records:
         dialog += f"{note_record.agent}: {note_record.text}\n"
 
-    if skip_last_user_text:
-        dialog = dialog[:dialog.rfind("user:")]
+    # Remove last \n
+    dialog = dialog[:-1]
 
     return dialog
 

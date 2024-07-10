@@ -87,6 +87,8 @@ class RespondToNoteResponse(BaseModel):
 
 @app.post("/respondToNote")
 async def respond_to_note(item: RespondToNoteBody) -> RespondToNoteResponse:
+    # TODO: validate note records
+
     response = generate_response_to_note(item.note)
     response = sanityze_text_no_special_chars(response)
     response = response.strip()

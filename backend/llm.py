@@ -13,7 +13,9 @@ def generate_response_to_note(note: list[NoteRecord]):
     raw_strategy = pick_response_strategy(last_user_text)
     raw_strategy = raw_strategy.strip().lower()
 
-    # print(f"Strategy: {raw_strategy}")
+    print()
+    print()
+    print(f"Strategy: {raw_strategy}")
 
     scores = [
         raw_strategy.find("questions"),
@@ -29,41 +31,51 @@ def generate_response_to_note(note: list[NoteRecord]):
             min_score = score
             best_strategy_index = i
 
-    # if best_strategy_index == 0:
-    #     return respond_questions(user_note)
-    # elif best_strategy_index == 1:
-    #     return respond_support(user_note)
-    # elif best_strategy_index == 2:
-    #     return respond_advice(user_note)
-    # elif best_strategy_index == 3:
-    #     return respond_empathy(user_note)
+    if best_strategy_index == 0:
+        return respond_questions(note, last_user_text)
+    elif best_strategy_index == 1:
+        return respond_support(note, last_user_text)
+    elif best_strategy_index == 2:
+        return respond_advice(note, last_user_text)
+    elif best_strategy_index == 3:
+        return respond_empathy(note, last_user_text)
 
     # Fallback to questions if the strategy is not recognized
     return respond_questions(note, last_user_text)
 
 
-def pick_response_strategy(user_note):
-    instruction = f"""Pick the best response strategy for the note "{user_note}" out of 4 options:
-    1. 'Questions' when user is unsure about their feelings and needs help processing them.
-    2. 'Support' when user is feeling down and needs reassurance.
-    3. 'Advice' when user is looking for guidance on how to handle a situation.
-    4. 'Empathy' when user is feeling overwhelmed and needs to feel understood."""
-
+def pick_response_strategy(last_user_text):
     payload = {
-        "inputs": f"{instruction}\nStrategy: \"",
+        "inputs": f"""
+            **Instructions:**
+            Pick the best response strategy for user's message out of 4 options:
+            1. 'Questions' when user is unsure about their feelings and needs help processing them.
+            2. 'Support' when user is feeling down and needs reassurance.
+            3. 'Advice' when user is looking for guidance on how to handle a situation.
+            4. 'Empathy' when user is feeling overwhelmed and needs to feel understood.
+
+            **Desired format:**
+            Strategy: <strategy (Question or Support or Advice or Empathy)>
+            <end generation>
+
+            **Input note:** "{last_user_text}"
+
+            **Output in desired format:** \n""",
         "parameters": {
             "temperature": 0.6,
             "return_full_text": False,
-            "max_new_tokens": 10,
+            "max_new_tokens": 5,
         },
     }
+
+    payload["inputs"] = payload["inputs"].replace("\t", "").replace("  ", "")
 
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()[0]["generated_text"]
 
 
 def process_note_template(context_prompt: str, format_prompt: str, note: list[NoteRecord], last_user_text: str):
-    note_context = note_records_to_dialog(note, skip_last_user_text=True)
+    note_context = note_records_to_dialog(note, skip_last_record=True)
 
     payload = {
         "inputs": f"""
@@ -86,7 +98,7 @@ def process_note_template(context_prompt: str, format_prompt: str, note: list[No
     }
 
     payload["inputs"] = payload["inputs"].replace("\t", "").replace("  ", "")
-    print("---", payload["inputs"])
+    print(payload["inputs"])
 
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()[0]["generated_text"]
@@ -96,7 +108,7 @@ def respond_questions(note: list[NoteRecord], last_user_text: str):
     return process_note_template(
         f"""You are helpful reflection assistant.
         Your goal is to respond with a list of 2-3 questions that can help the person process emotions.
-        Reference specific details about the note in your questions.
+        Reference specific details about the note and context in your questions.
         Avoid sentence constructions with \"and\" and \"me\".
         Be gentle and kind.""",
         f"""<one-sentence empathetic intro to questions>
@@ -106,31 +118,33 @@ def respond_questions(note: list[NoteRecord], last_user_text: str):
         note, last_user_text)
 
 
-# def respond_support(user_note):
-#     return process_note_template(f"""You are a helpful support assistant. You are given a note containing person's thoughts.
-#     Your goal is to respond with a supportive message that can help the person feel better.
-#     Your response must contain only the supportive message.
-#     Reference specific details about the note in your message.
-#     Avoid sentence constructions with \"and\" and \"me\".
-#     Be gentle and kind.""", user_note)
-#
-#
-# def respond_advice(user_note):
-#     return process_note_template(f"""You are a helpful advice assistant. You are given a note containing person's thoughts.
-#     Your goal is to respond with advice on how to handle the situation.
-#     Your response must contain only the advice.
-#     Reference specific details about the note in your advice.
-#     Avoid sentence constructions with \"and\" and \"me\".
-#     Be gentle and kind.""", user_note)
-#
-#
-# def respond_empathy(user_note):
-#     return process_note_template(f"""You are a helpful empathy assistant. You are given a note containing person's thoughts.
-#     Your goal is to respond with a message that shows understanding and empathy.
-#     Your response must contain only the empathetic message.
-#     Reference specific details about the note in your message.
-#     Avoid sentence constructions with \"and\" and \"me\".
-#     Be gentle and kind.""", user_note)
+def respond_support(note: list[NoteRecord], last_user_text: str):
+    return process_note_template(
+        f"""Your goal is to respond with a supportive message to help the person feel better.
+        Reference specific details about the note and context in your message.
+        Be gentle and kind.""",
+        f"""<empathetic message, 2-3 sentences>""",
+        note, last_user_text)
+
+
+def respond_advice(note: list[NoteRecord], last_user_text: str):
+    return process_note_template(
+        f"""You are a professional helpful advice assistant.
+        Your goal is to respond with a message that provides prescience advice and guidance.
+        Reference specific details about the note and context in your message.
+        Be gentle and kind.""",
+        f"""<advice message, 2-3 sentences>""",
+        note, last_user_text)
+
+
+def respond_empathy(note: list[NoteRecord], last_user_text: str):
+    return process_note_template(
+        f"""You are a helpful empathy assistant.
+        Your goal is to respond with an empathetic message that shows understanding and support.
+        Reference specific details about the note and context in your message.
+        Be gentle and kind.""",
+        f"""<empathetic message, 2-3 sentences>""",
+        note, last_user_text)
 
 
 def generate_note_title(user_note):
