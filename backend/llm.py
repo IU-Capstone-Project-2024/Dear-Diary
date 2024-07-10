@@ -1,7 +1,7 @@
 import os
 import requests
 
-from utils import last_user_text_from_note
+from utils import last_user_text_from_note, note_records_to_dialog
 from data_models import NoteRecord
 
 API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
@@ -29,20 +29,17 @@ def generate_response_to_note(note: list[NoteRecord]):
             min_score = score
             best_strategy_index = i
 
-    # temp implementation
-    user_note = last_user_text
-
-    if best_strategy_index == 0:
-        return respond_questions(user_note)
-    elif best_strategy_index == 1:
-        return respond_support(user_note)
-    elif best_strategy_index == 2:
-        return respond_advice(user_note)
-    elif best_strategy_index == 3:
-        return respond_empathy(user_note)
+    # if best_strategy_index == 0:
+    #     return respond_questions(user_note)
+    # elif best_strategy_index == 1:
+    #     return respond_support(user_note)
+    # elif best_strategy_index == 2:
+    #     return respond_advice(user_note)
+    # elif best_strategy_index == 3:
+    #     return respond_empathy(user_note)
 
     # Fallback to questions if the strategy is not recognized
-    return respond_questions(user_note)
+    return respond_questions(note, last_user_text)
 
 
 def pick_response_strategy(user_note):
@@ -61,63 +58,79 @@ def pick_response_strategy(user_note):
         },
     }
 
-    print(payload)
-
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()[0]["generated_text"]
 
 
-def process_note_template(instruction, user_note):
-    clean_instruction = instruction.replace("\n", " ")
+def process_note_template(context_prompt: str, format_prompt: str, note: list[NoteRecord], last_user_text: str):
+    note_context = note_records_to_dialog(note, skip_last_user_text=True)
 
     payload = {
-        "inputs": f"{clean_instruction} The note: \"{user_note}\" Here is my response: ",
+        "inputs": f"""
+        **Instructions:**
+        {context_prompt}
+        
+        **Desired format:**
+        {format_prompt}
+        
+        **Context from previous messages:**
+        {note_context}
+        
+        **Input note:** "{last_user_text}"
+        
+        **Output in desired format:** \n""",
         "parameters": {
-            "temperature": 0.8,
+            "temperature": 0.9,
             "return_full_text": False,
         },
     }
 
+    payload["inputs"] = payload["inputs"].replace("\t", "").replace("  ", "")
+    print("---", payload["inputs"])
+
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()[0]["generated_text"]
 
 
-def respond_questions(user_note):
-    return process_note_template(f"""You are helpful reflection assistant. You are given a note containing person's thoughts.
-    Your goal is to respond with a list of questions that can help the person process emotions, better understand the situation they are in and reassure them.
-    Answer with 3 to 5 questions.
-    Your response must contain only the list questions.
-    Each point in a list must contain only one question.
-    Reference specific details about the note in your questions.
-    Avoid sentence constructions with \"and\" and \"me\".
-    Be gentle and kind.""", user_note)
+def respond_questions(note: list[NoteRecord], last_user_text: str):
+    return process_note_template(
+        f"""You are helpful reflection assistant.
+        Your goal is to respond with a list of 2-3 questions that can help the person process emotions.
+        Reference specific details about the note in your questions.
+        Avoid sentence constructions with \"and\" and \"me\".
+        Be gentle and kind.""",
+        f"""<one-sentence empathetic intro to questions>
+        1. <question1>
+        2. <question2>
+        3. <optional question3>""",
+        note, last_user_text)
 
 
-def respond_support(user_note):
-    return process_note_template(f"""You are a helpful support assistant. You are given a note containing person's thoughts.
-    Your goal is to respond with a supportive message that can help the person feel better.
-    Your response must contain only the supportive message.
-    Reference specific details about the note in your message.
-    Avoid sentence constructions with \"and\" and \"me\".
-    Be gentle and kind.""", user_note)
-
-
-def respond_advice(user_note):
-    return process_note_template(f"""You are a helpful advice assistant. You are given a note containing person's thoughts.
-    Your goal is to respond with advice on how to handle the situation.
-    Your response must contain only the advice.
-    Reference specific details about the note in your advice.
-    Avoid sentence constructions with \"and\" and \"me\".
-    Be gentle and kind.""", user_note)
-
-
-def respond_empathy(user_note):
-    return process_note_template(f"""You are a helpful empathy assistant. You are given a note containing person's thoughts.
-    Your goal is to respond with a message that shows understanding and empathy.
-    Your response must contain only the empathetic message.
-    Reference specific details about the note in your message.
-    Avoid sentence constructions with \"and\" and \"me\".
-    Be gentle and kind.""", user_note)
+# def respond_support(user_note):
+#     return process_note_template(f"""You are a helpful support assistant. You are given a note containing person's thoughts.
+#     Your goal is to respond with a supportive message that can help the person feel better.
+#     Your response must contain only the supportive message.
+#     Reference specific details about the note in your message.
+#     Avoid sentence constructions with \"and\" and \"me\".
+#     Be gentle and kind.""", user_note)
+#
+#
+# def respond_advice(user_note):
+#     return process_note_template(f"""You are a helpful advice assistant. You are given a note containing person's thoughts.
+#     Your goal is to respond with advice on how to handle the situation.
+#     Your response must contain only the advice.
+#     Reference specific details about the note in your advice.
+#     Avoid sentence constructions with \"and\" and \"me\".
+#     Be gentle and kind.""", user_note)
+#
+#
+# def respond_empathy(user_note):
+#     return process_note_template(f"""You are a helpful empathy assistant. You are given a note containing person's thoughts.
+#     Your goal is to respond with a message that shows understanding and empathy.
+#     Your response must contain only the empathetic message.
+#     Reference specific details about the note in your message.
+#     Avoid sentence constructions with \"and\" and \"me\".
+#     Be gentle and kind.""", user_note)
 
 
 def generate_note_title(user_note):
