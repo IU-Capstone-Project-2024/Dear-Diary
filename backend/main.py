@@ -1,16 +1,16 @@
 import datetime
 import random
 
-from dotenv import load_dotenv
-from fastapi import FastAPI
-from pydantic import BaseModel
-
-from data_models import NoteRecord
-from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note, generate_note_title
-from utils import sanityze_text_letters_only, sanityze_text_no_special_chars, note_records_to_dialog
 import firebase_admin
+from dotenv import load_dotenv
+from fastapi import FastAPI, Response, status
 from firebase_admin import credentials
 from firebase_admin import storage
+from pydantic import BaseModel
+
+from data_models import NoteRecord, EmotionsReportRecord
+from llm import generate_emotion, generate_recommendation_for_emotion, generate_response_to_note, generate_note_title
+from utils import sanityze_text_no_special_chars
 
 load_dotenv()
 app = FastAPI(
@@ -23,6 +23,26 @@ firebase_admin.initialize_app(cred, {
 })
 
 bucket = storage.bucket()
+
+
+class PostOnboardingBody(BaseModel):
+    usage: str
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "usage": "Self-improvement"
+                }
+            ]
+        }
+    }
+
+
+@app.post("/onboarding")
+async def post_onboarding(body: PostOnboardingBody):
+    # TODO
+    return Response(status_code=status.HTTP_200_OK)
 
 
 class GetNoteCoverBody(BaseModel):
@@ -134,3 +154,42 @@ async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
     recommendation = sanityze_text_no_special_chars(recommendation).strip()
 
     return GetEmotionResponse(emotion=clean_emotion, recommendation=recommendation)
+
+
+class PutEmotionsReportBody(BaseModel):
+    emotions: list[str]
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "emotions": ["Anger", "Sadness", "Sadness", "Happiness", "Rage"]
+                }
+            ]
+        }
+    }
+
+
+class PutEmotionsReportResponse(BaseModel):
+    length: int
+    emotions: list[EmotionsReportRecord]
+
+
+@app.put("/emotionsReport")
+async def put_emotions_report(item: PutEmotionsReportBody) -> PutEmotionsReportResponse:
+    max_length = 3
+
+    emotions = item.emotions
+
+    # aggregate by number of occurrences and pick top 3
+    emotions_count = {}
+    for emotion in emotions:
+        if emotion not in emotions_count:
+            emotions_count[emotion] = 0
+        emotions_count[emotion] += 1
+
+    emotions_report = []
+    for emotion, count in sorted(emotions_count.items(), key=lambda x: x[1], reverse=True):
+        emotions_report.append(EmotionsReportRecord(emotion=emotion, count=count))
+
+    return PutEmotionsReportResponse(length=min(max_length, len(emotions_report)), emotions=emotions_report[:max_length])
