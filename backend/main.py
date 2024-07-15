@@ -153,7 +153,7 @@ async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
 
     clean_emotion = clean_emotion.lower().capitalize()
 
-    recommendation = await generate_recommendation_for_emotion(clean_emotion).strip()
+    recommendation = await generate_recommendation_for_emotion(clean_emotion)
     recommendation = sanityze_text_no_special_chars(recommendation).strip()
 
     return GetEmotionResponse(emotion=clean_emotion, recommendation=recommendation)

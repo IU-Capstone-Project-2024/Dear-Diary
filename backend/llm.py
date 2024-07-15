@@ -205,7 +205,8 @@ async def generate_recommendation_for_emotion(emotion):
         **Desired format:**
         <recommendation, 4-6 sentences>
 
-        **Input emotion:** "{emotion}"
+        **Input emotion:**
+        {emotion}
 
         **Output in desired format:** \n""",
         "parameters": {
