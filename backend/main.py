@@ -26,13 +26,13 @@ bucket = storage.bucket()
 
 
 class PostOnboardingBody(BaseModel):
-    usage: str
+    usage: list[str]
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "usage": "Self-improvement"
+                    "usage": ["Self-improvement"]
                 }
             ]
         }
