@@ -10,12 +10,16 @@ def last_user_text_from_note(note_records: list[NoteRecord]) -> str | None:
     return None
 
 
-def note_records_to_dialog(note_records: list[NoteRecord], skip_last_record=False) -> str:
+def note_records_to_dialog(note_records: list[NoteRecord], skip_last_record=False, only_user_records=False) -> str:
     records = list(note_records)
 
     # Used when dialog is needed only for context and the last record is provided separately
     if skip_last_record:
         records = records[:-1]
+
+    # Used when dialog is needed only for user records
+    if only_user_records:
+        records = [record for record in records if record.agent == "user"]
 
     dialog = ""
     for note_record in records:

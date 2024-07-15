@@ -25,6 +25,26 @@ firebase_admin.initialize_app(cred, {
 bucket = storage.bucket()
 
 
+example_note_schema = {
+    "json_schema_extra": {
+        "examples": [
+            {
+                "note": [{
+                    "text": "i have exams and a lot of stress. What do i do?",
+                    "agent": "user"
+                }, {
+                    "text": "I see that you feel overwhelmed. Try breathing in and out 5 times slowly.",
+                    "agent": "bot"
+                }, {
+                    "text": "it didnt help, i am still stressed. what else can i do?",
+                    "agent": "user"
+                }]
+            }
+        ]
+    }
+}
+
+
 class PostOnboardingBody(BaseModel):
     usage: list[str]
 
@@ -80,25 +100,7 @@ async def get_status() -> StatusResponse:
 
 class RespondToNoteBody(BaseModel):
     note: list[NoteRecord]
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "note": [{
-                        "text": "i have exams and a lot of stress. What do i do?",
-                        "agent": "user"
-                    }, {
-                        "text": "breath in and out 5 times. did it help?",
-                        "agent": "bot"
-                    }, {
-                        "text": "no, i am still stressed. what else can i do?",
-                        "agent": "user"
-                    }]
-                }
-            ]
-        }
-    }
+    model_config = example_note_schema
 
 
 class RespondToNoteResponse(BaseModel):
@@ -109,14 +111,15 @@ class RespondToNoteResponse(BaseModel):
 async def respond_to_note(item: RespondToNoteBody) -> RespondToNoteResponse:
     # TODO: validate note records
 
-    response = generate_response_to_note(item.note)
+    response = await generate_response_to_note(item.note)
     response = sanityze_text_no_special_chars(response)
     response = response.strip()
     return RespondToNoteResponse(answer=response)
 
 
 class NoteTitleBody(BaseModel):
-    note: str
+    note: list[NoteRecord]
+    model_config = example_note_schema
 
 
 class NoteTitleResponse(BaseModel):
@@ -125,7 +128,7 @@ class NoteTitleResponse(BaseModel):
 
 @app.post("/noteTitle")
 async def note_title(item: NoteTitleBody) -> NoteTitleResponse:
-    title = generate_note_title(item.note)
+    title = await generate_note_title(item.note)
     title = sanityze_text_no_special_chars(title).strip()
     return NoteTitleResponse(title=title)
 
@@ -141,7 +144,7 @@ class GetEmotionResponse(BaseModel):
 
 @app.post("/emotion")
 async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
-    emotion = generate_emotion(item.note)
+    emotion = await generate_emotion(item.note)
 
     clean_emotion = emotion
     # try to find text in quotes
@@ -150,7 +153,7 @@ async def get_emotion(item: GetEmotionBody) -> GetEmotionResponse:
 
     clean_emotion = clean_emotion.lower().capitalize()
 
-    recommendation = generate_recommendation_for_emotion(clean_emotion).strip()
+    recommendation = await generate_recommendation_for_emotion(clean_emotion).strip()
     recommendation = sanityze_text_no_special_chars(recommendation).strip()
 
     return GetEmotionResponse(emotion=clean_emotion, recommendation=recommendation)
