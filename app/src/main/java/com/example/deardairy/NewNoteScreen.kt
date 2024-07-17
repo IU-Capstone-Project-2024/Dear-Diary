@@ -105,11 +105,11 @@ fun AssistantMessage(text: String) {
                 fontFamily = playfairDisplayFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
-                color = DarkBlueColor,
+                color = BackgroundColor,
                 fontStyle = FontStyle.Italic
             ),
             modifier = Modifier
-//                .padding(vertical = 8.dp)
+                .padding(top = 4.dp, bottom = 24.dp)
                 .background(
                     color = BlueContainerColor,
                     shape = RoundedCornerShape(12.dp)
@@ -202,9 +202,9 @@ fun NewNoteScreen(navController: NavHostController) {
                         fontSize = 15.sp,
                         color = DarkBlueColor
                     ), modifier = Modifier
-                        .padding(bottom = 15.dp)
+                        .padding(bottom = 12.dp)
                         .width(250.dp))
-                    
+
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -236,7 +236,7 @@ fun NewNoteScreen(navController: NavHostController) {
                             .fillMaxSize()
                             .weight(1f)
 //                            .height(IntrinsicSize.Min)
-                            .padding(end = 32.dp),
+                            .padding(top = 24.dp, end = 32.dp),
                         interactionSource = remember { MutableInteractionSource() },
                         enabled = isInputEnabled
                     )
@@ -303,18 +303,26 @@ fun NewNoteScreen(navController: NavHostController) {
                     Log.d("NewNote", "clicked")
                     CoroutineScope(Dispatchers.IO).launch {
                         val initialNote = Message(agent = "user", text = inputValue)
-                        conversation.add(initialNote)
+//                        conversation.add(initialNote)
                         Log.d("NewNote", "initialNote: ${initialNote}")
                         Log.d("NewNote", "conversation: ${conversation}")
                         try {
-                            val conversationMapList = conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
+                            val conversationMapList =
+                                conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
                             Log.d("NewNote", "conversationMapList: ${conversationMapList}")
                             val response = apiClient.respondToNote(conversationMapList)
                             withContext(Dispatchers.Main) {
                                 if (response != null) {
+                                    conversation.add(initialNote)
+                                    inputValue = ""
 //                                    isInputEnabled = false
                                     apiResponse = response.answer
-                                    conversation.add(Message(agent = "assistant", text = response.answer))
+                                    conversation.add(
+                                        Message(
+                                            agent = "assistant",
+                                            text = response.answer
+                                        )
+                                    )
                                     Log.d("NewNote", "conversation: ${conversation}")
                                 } else {
                                     showErrorDialog = true
