@@ -144,7 +144,7 @@ fun GoalsScreen(navController: NavHostController) {
 
                                     withContext(Dispatchers.Main) {
                                         Log.d("GoalsScreen", "before nav to main screen")
-                                        navController.navigate("main_screen")
+                                        navController.navigate("onboarding1")
                                     }
                                 }
                             }
