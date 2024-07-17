@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,67 +15,162 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Modifier.*
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.deardairy.database.Note
-import com.example.deardairy.database.NoteDao
 import com.example.deardairy.ui.theme.BackgroundColor
 import com.example.deardairy.ui.theme.BlueContainerColor
-import com.example.deardairy.ui.theme.BodyTextStyle
 import com.example.deardairy.ui.theme.ButtonState
 import com.example.deardairy.ui.theme.ButtonType
 import com.example.deardairy.ui.theme.CustomButton
 import com.example.deardairy.ui.theme.DarkBlueColor
 import com.example.deardairy.ui.theme.Overlay
 import com.example.deardairy.ui.theme.PrimaryStyledContainer
-import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.TopBar
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.deardairy.database.AppDatabase
+import androidx.compose.ui.text.font.FontStyle
 import com.example.deardairy.database.NoteDatabase
 import com.example.deardairy.database.UserDatabase
 import com.example.deardairy.network.ApiClient
+import com.example.deardairy.network.StatusResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
+data class Message(val agent: String, val text: String)
+
+@Composable
+fun UserMessage(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+//            .padding(vertical = 8.dp),
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(
+                fontFamily = playfairDisplayFontFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 15.sp,
+                color = DarkBlueColor
+            ),
+            modifier = Modifier
+//                .padding(vertical = 8.dp)
+                .background(
+                    color = BlueContainerColor,
+                    shape = RoundedCornerShape(12.dp)
+                )
+//                .padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun AssistantMessage(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(
+                fontFamily = playfairDisplayFontFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 15.sp,
+                color = DarkBlueColor,
+                fontStyle = FontStyle.Italic
+            ),
+            modifier = Modifier
+//                .padding(vertical = 8.dp)
+                .background(
+                    color = BlueContainerColor,
+                    shape = RoundedCornerShape(12.dp)
+                )
+//                .padding(16.dp)
+        )
+    }
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewNoteScreen(navController: NavHostController) {
     var overlayVisible by remember { mutableStateOf(false) }
     var inputValue by remember { mutableStateOf("") }
-    var isTextFieldFocused by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val apiClient = ApiClient()
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var apiStatus by remember { mutableStateOf<StatusResponse?>(null) }
+    var helpButtonEnabled by remember { mutableStateOf(false) }
+    Log.d("NewNote", "helpButtonEnabled: ${helpButtonEnabled}")
+    var helpButtonColor by remember { mutableStateOf(Color.Unspecified) }
+    var apiResponse by remember { mutableStateOf("") }
+    var isInputEnabled by remember { mutableStateOf(true) }
+
+    val conversationState = remember { mutableStateListOf<Message>() }
+    val conversation by rememberUpdatedState(conversationState)
+
+    LaunchedEffect(Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = withTimeout(30000) {
+                    apiClient.getStatus()
+                }
+                withContext(Dispatchers.Main) {
+                    if (response?.status == "Up and running") {
+                        apiStatus = response
+                        Log.d("NewNote", "apiStatus: $apiStatus")
+                    } else {
+                        showErrorDialog = true
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showErrorDialog = true
+                }
+            }
+        }
+    }
+
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text("AI assistant is unavailable") },
+            confirmButton = {
+                TextButton(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 
 
     Box(
@@ -111,24 +204,44 @@ fun NewNoteScreen(navController: NavHostController) {
                     ), modifier = Modifier
                         .padding(bottom = 15.dp)
                         .width(250.dp))
+                    
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.TopStart)
+                                .padding(end = 32.dp)
+                        ) {
+                            items(conversation) { message ->
+                                if (message.agent == "user") {
+                                    UserMessage(message.text)
+                                } else if (message.agent == "assistant") {
+                                    AssistantMessage(message.text)
+                                }
+                            }
+                        }
+
                     BasicTextField(
                         value = inputValue,
-                        onValueChange = { newInputValue: String ->
+                        onValueChange = { newInputValue ->
                             inputValue = newInputValue
+                            helpButtonEnabled = newInputValue.isNotEmpty()
                         },
                         textStyle = TextStyle(
                             fontFamily = playfairDisplayFontFamily,
                             fontWeight = FontWeight.Normal,
                             fontSize = 15.sp,
-                            color = BackgroundColor
+                            color = DarkBlueColor
                         ),
                         modifier = Modifier
                             .fillMaxSize()
-                            .width(250.dp),
-                        interactionSource = remember { MutableInteractionSource() }
+                            .weight(1f)
+//                            .height(IntrinsicSize.Min)
+                            .padding(end = 32.dp),
+                        interactionSource = remember { MutableInteractionSource() },
+                        enabled = isInputEnabled
                     )
-
                 }
+
                 Spacer(modifier = Modifier.height(17.dp))
                 CustomButton(
                     buttonState = ButtonState(
@@ -182,18 +295,49 @@ fun NewNoteScreen(navController: NavHostController) {
             }
         }
     }
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 35.dp, top = 116.dp)
+                .clickable(enabled = helpButtonEnabled) {
+                    Log.d("NewNote", "clicked")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val initialNote = Message(agent = "user", text = inputValue)
+                        conversation.add(initialNote)
+                        Log.d("NewNote", "initialNote: ${initialNote}")
+                        Log.d("NewNote", "conversation: ${conversation}")
+                        try {
+                            val conversationMapList = conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
+                            Log.d("NewNote", "conversationMapList: ${conversationMapList}")
+                            val response = apiClient.respondToNote(conversationMapList)
+                            withContext(Dispatchers.Main) {
+                                if (response != null) {
+//                                    isInputEnabled = false
+                                    apiResponse = response.answer
+                                    conversation.add(Message(agent = "assistant", text = response.answer))
+                                    Log.d("NewNote", "conversation: ${conversation}")
+                                } else {
+                                    showErrorDialog = true
+                                }
+                            }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                showErrorDialog = true
+                            }
+                        }
+                    }
+                }
+        ) {
         Image(
             painter = painterResource(id = R.drawable.help),
             contentDescription = "Help Icon",
             modifier = Modifier
-                .height(136.dp)
-                .clickable {
-                }
-                .padding(horizontal = 35.dp)
-                .offset(y = 116.dp)
-                .align(Alignment.TopEnd),
-            contentScale = ContentScale.Fit
+                .height(136.dp),
+            contentScale = ContentScale.Fit ,
+            colorFilter = if (!helpButtonEnabled) ColorFilter.tint(helpButtonColor) else null
         )
+
+        }
     if (overlayVisible) {
             Overlay(
                 title = "Your notes will not be saved.\n" +
