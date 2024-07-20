@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.code.gson:gson:2.8.8")
     implementation("com.google.android.gms:play-services-location:18.0.0")
     implementation("com.google.accompanist:accompanist-coil:0.15.0")
     implementation ("com.squareup.moshi:moshi:1.12.0")
@@ -61,6 +62,7 @@ dependencies {
     implementation ("com.jakewharton.timber:timber:5.0.1")
     implementation("androidx.room:room-runtime:2.5.0-alpha02")
     implementation("androidx.room:room-ktx:2.5.0-alpha02")
+    implementation(libs.firebase.crashlytics.buildtools)
     kapt("androidx.room:room-compiler:2.5.0-alpha02")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")

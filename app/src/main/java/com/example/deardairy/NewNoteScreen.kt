@@ -251,20 +251,26 @@ fun NewNoteScreen(navController: NavHostController) {
                         onClickAction = {
                             CoroutineScope(Dispatchers.IO).launch {
                                 try {
+                                    // Добавляем сообщение пользователя перед сохранением
+                                    val initialNote = Message(agent = "user", text = inputValue)
+                                    conversation.add(initialNote)
+                                    inputValue = ""
+
                                     val noteCoverResponse = apiClient.saveNoteCover("")
                                     val coverId = noteCoverResponse?.imageId ?: ""
                                     val coverUrl = noteCoverResponse?.imageUrl ?: ""
                                     Log.d("NewNote", "coverId: ${coverId}")
 
-
-                                    val noteTitleResponse = apiClient.getNoteTitle(inputValue)
+                                    val conversationMapList =
+                                        conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
+                                    Log.d("NewNote", "conversationMapList: ${conversationMapList}")
+                                    val noteTitleResponse = apiClient.getNoteTitle(conversationMapList)
                                     val noteTitle = noteTitleResponse?.title ?: "New Note"
                                     Log.d("NewNote", "note Title: ${noteTitle}")
 
-
                                     val newNote = Note(
                                         name = noteTitle,  // Your logic for the note name
-                                        text = inputValue,
+                                        text = conversationMapList.toString(),
                                         date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
                                         coverId = coverId,
                                         coverUrl = coverUrl

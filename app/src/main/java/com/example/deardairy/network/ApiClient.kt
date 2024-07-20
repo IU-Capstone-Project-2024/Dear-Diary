@@ -154,10 +154,10 @@ class ApiClient {
             }
         }
     }
-    suspend fun getNoteTitle(note: String): NoteTitleResponse? {
+    suspend fun getNoteTitle(note: List<Map<String, String>>): NoteTitleResponse? {
         val mediaType = "application/json".toMediaTypeOrNull()
         val jsonObject = JSONObject().apply {
-            put("note", note)
+            put("note", JSONArray(note))
         }
         val requestBody = jsonObject.toString().toRequestBody(mediaType)
         Log.d("ApiClient", "Request Body: ${jsonObject.toString()}")
