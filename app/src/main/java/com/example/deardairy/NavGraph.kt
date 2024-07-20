@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.deardairy.network.EmotionCount
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -61,12 +62,21 @@ fun NavGraph(
         composable("my_emotions_before_analytics") {
             MyEmotionsBeforeAnalyticsScreen(navController)
         }
-        composable(
-            "my_emotions_analytics/{selectedTimePeriod}",
-            arguments = listOf(navArgument("selectedTimePeriod") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod") ?: "Today"
-            MyEmotionsAnalytics(navController = navController, selectedTimePeriod = selectedTimePeriod)
+        composable("my_emotions_before_analytics") { backStackEntry ->
+            MyEmotionsBeforeAnalyticsScreen(navController)
+        }
+        composable("my_emotions_analytics/{selectedTimePeriod}/{length}/{emotions}") { backStackEntry ->
+            val selectedTimePeriod = backStackEntry.arguments?.getString("selectedTimePeriod")
+            val length = backStackEntry.arguments?.getString("length")?.toIntOrNull()
+            val emotionsString = backStackEntry.arguments?.getString("emotions")
+            val emotions = emotionsString?.split(",")?.map {
+                val (emotion, count) = it.split(":")
+                EmotionCount(emotion, count.toInt())
+            }
+
+            if (selectedTimePeriod != null && length != null && emotions != null) {
+                MyEmotionsAnalytics(navController, selectedTimePeriod, length, emotions)
+            }
         }
         composable(
             "prev_note_screen/{noteId}",

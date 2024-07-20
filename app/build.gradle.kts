@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.0-alpha02")
     implementation("androidx.room:room-ktx:2.5.0-alpha02")
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.core.i18n)
     kapt("androidx.room:room-compiler:2.5.0-alpha02")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")

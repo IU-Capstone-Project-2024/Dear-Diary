@@ -31,4 +31,7 @@ interface EmotionDao {
 
     @Query("SELECT COUNT(*) FROM Emotion")
     fun getEmotionCount(): Int
+
+    @Query("SELECT * FROM emotion WHERE date BETWEEN :startDate AND :endDate")
+    fun getEmotionsBetweenDates(startDate: String, endDate: String): List<Emotion>
 }

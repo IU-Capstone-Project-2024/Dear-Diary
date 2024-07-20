@@ -42,6 +42,18 @@ data class RespondToNoteResponse(
     val answer: String
 )
 
+data class EmotionsRequest(val emotions: List<String>)
+
+data class EmotionCount(
+    val emotion: String,
+    val count: Int
+)
+
+data class EmotionsResponse(
+    val length: Int,
+    val emotions: List<EmotionCount>
+)
+
 class ApiClient {
     private val client = OkHttpClient.Builder()
         .readTimeout(60, TimeUnit.SECONDS)
@@ -294,4 +306,52 @@ class ApiClient {
             }
         }
     }
+
+    suspend fun putEmotions(emotions: List<String>): EmotionsResponse? {
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val jsonObject = JSONObject().apply {
+            put("emotions", JSONArray(emotions))
+        }
+        val requestBody = jsonObject.toString().toRequestBody(mediaType)
+        Log.d("ApiClient", "Request Body: ${jsonObject.toString()}")
+
+        val request = Request.Builder()
+            .url("https://dear-diary-capstone.onrender.com/emotionsReport")
+            .put(requestBody)
+            .build()
+
+        return suspendCancellableCoroutine { continuation ->
+            client.newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    if (!response.isSuccessful) {
+                        Log.d("ApiClient", "here")
+                        continuation.resume(null)
+                        Log.e("ApiClient", "Unsuccessful response. Code: ${response.code}, Message: ${response.message}")
+                        return
+                    }
+
+                    val responseBody = response.body?.string()
+                    Log.d("ApiClient", "Response Body: $responseBody")
+
+                    responseBody?.let {
+                        val emotionsResponse = moshi.adapter(EmotionsResponse::class.java).fromJson(it)
+                        continuation.resume(emotionsResponse)
+                    } ?: run {
+                        continuation.resume(null)
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    continuation.resumeWithException(e)
+                    Log.e("ApiClient", "Request failed. Error: ${e.message}")
+                }
+            })
+
+            continuation.invokeOnCancellation {
+                Log.d("ApiClient", "Request cancelled")
+                client.dispatcher.cancelAll()
+            }
+        }
+    }
+
 }
