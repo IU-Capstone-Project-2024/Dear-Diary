@@ -1,0 +1,6 @@
+fastapi[all]
+requests
+python-dotenv
+pydantic
+firebase-admin
+aiohttp
