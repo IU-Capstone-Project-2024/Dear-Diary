@@ -1,9 +1,8 @@
 import os
 import aiohttp
-from openai.lib.azure import AzureOpenAI
 
-from utils import last_user_text_from_note, note_records_to_dialog
-from data_models import NoteRecord
+from backend.utils import last_user_text_from_note, note_records_to_dialog
+from backend.data_models import NoteRecord
 
 API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_KEY')}"}
@@ -16,6 +15,7 @@ async def request_text_generation(payload):
     async with aiohttp.ClientSession() as session:
         async with session.post(API_URL, headers=headers, json=payload) as response:
             response_data = await response.json()
+
     return response_data[0]["generated_text"]
 
 
@@ -79,7 +79,7 @@ async def pick_response_strategy(last_user_text):
     return await request_text_generation(payload)
 
 
-async def process_note_template(context_prompt: str, format_prompt: str, note: list[NoteRecord], last_user_text: str):
+async def process_note_template(context_prompt: str, note: list[NoteRecord]):
     note_text = note_records_to_dialog(note, skip_last_record=False)
     length = len(note)
 
@@ -116,11 +116,7 @@ async def respond_questions(note: list[NoteRecord], last_user_text: str):
         Reference specific details about the note and context in your questions.
         Avoid sentence constructions with \"and\" and \"me\".
         Be gentle and kind.""",
-        f"""<one-sentence empathetic intro to questions>
-        1. <question1>
-        2. <question2>
-        3. <optional question3>""",
-        note, last_user_text)
+        note)
 
 
 async def respond_support(note: list[NoteRecord], last_user_text: str):
@@ -128,8 +124,7 @@ async def respond_support(note: list[NoteRecord], last_user_text: str):
         f"""Your goal is to respond with a supportive message to help the person feel better.
         Reference specific details about the note and context in your message.
         Be gentle and kind.""",
-        f"""<empathetic message, 2-3 sentences>""",
-        note, last_user_text)
+        note)
 
 
 async def respond_advice(note: list[NoteRecord], last_user_text: str):
@@ -138,8 +133,7 @@ async def respond_advice(note: list[NoteRecord], last_user_text: str):
         Your goal is to respond with a message that provides prescience advice and guidance.
         Reference specific details about the note and context in your message.
         Be gentle and kind.""",
-        f"""<advice message, 2-3 sentences>""",
-        note, last_user_text)
+        note)
 
 
 async def respond_empathy(note: list[NoteRecord], last_user_text: str):
@@ -148,8 +142,7 @@ async def respond_empathy(note: list[NoteRecord], last_user_text: str):
         Your goal is to respond with an empathetic message that shows understanding and support.
         Reference specific details about the note and context in your message.
         Be gentle and kind.""",
-        f"""<empathetic message, 2-3 sentences>""",
-        note, last_user_text)
+        note)
 
 
 async def generate_note_title(note: list[NoteRecord]):

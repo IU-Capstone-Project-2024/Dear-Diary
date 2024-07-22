@@ -1,6 +1,6 @@
 import re
 
-from data_models import NoteRecord
+from backend.data_models import NoteRecord
 
 
 def last_user_text_from_note(note_records: list[NoteRecord]) -> str | None:
