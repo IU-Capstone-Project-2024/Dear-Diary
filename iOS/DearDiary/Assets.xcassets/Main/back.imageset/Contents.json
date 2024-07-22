@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "новая стрелка.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
