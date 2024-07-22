@@ -5,6 +5,7 @@ package com.example.deardairy
 import android.content.Intent
 import android.os.Bundle
 import android.text.style.BackgroundColorSpan
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -31,15 +32,30 @@ import com.example.deardairy.ui.theme.TitleTextStyle
 import com.example.deardairy.ui.theme.playfairDisplayFontFamily
 import com.example.deardairy.ui.theme.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavHostController
+import com.example.deardairy.util.PreferencesUtil
 
 @Composable
-fun LoadingScreen(onScreenTap: () -> Unit = {}) {
+fun LoadingScreen(navController: NavHostController, onScreenTap: () -> Unit = {}) {
+    val context = navController.context
+    Log.d("GoalsScreen", "OnboardingCompleted ${PreferencesUtil.isOnboardingCompleted(context)}, GoalsSelected ${PreferencesUtil.isGoalsSelected(context)}")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = BackgroundColor)
 //            .background(color = MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
+            .clickable(onClick = {
+                val onboardingCompleted = PreferencesUtil.isOnboardingCompleted(context)
+                val goalsSelected = PreferencesUtil.isGoalsSelected(context)
+                if (onboardingCompleted && goalsSelected) {
+                    navController.navigate("main_screen")
+                } else {
+                    navController.navigate("goals_screen")
+                }
+            })
     ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
@@ -83,15 +99,15 @@ fun LoadingScreen(onScreenTap: () -> Unit = {}) {
                 .padding(25.dp)
                 .align(Alignment.BottomCenter)
         )
-        Box(modifier = Modifier.fillMaxSize().clickable(onClick = onScreenTap))
+//        Box(modifier = Modifier.fillMaxSize().clickable(onClick = onScreenTap))
     }
 }
 
-@Preview
-@Composable
-fun LoadingScreenPreview() {
-    DearDairyTheme {
-        LoadingScreen()
-    }
-
-}
+//@Preview
+//@Composable
+//fun LoadingScreenPreview() {
+//    DearDairyTheme {
+//        LoadingScreen()
+//    }
+//
+//}

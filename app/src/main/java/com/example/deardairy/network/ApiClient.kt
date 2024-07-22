@@ -53,6 +53,9 @@ data class EmotionsResponse(
     val length: Int,
     val emotions: List<EmotionCount>
 )
+data class OnboardingRequest(val usage: List<String>)
+data class OnboardingResponse(val result: String)
+
 
 class ApiClient {
     private val client = OkHttpClient.Builder()
@@ -65,7 +68,7 @@ class ApiClient {
     private val titleAdapter = moshi.adapter(NoteTitleResponse::class.java)
     private val statusAdapter = moshi.adapter(StatusResponse::class.java)
     private val respondToNoteAdapter = moshi.adapter(RespondToNoteResponse::class.java)
-
+    private val onboardingAdapter = moshi.adapter(OnboardingResponse::class.java)
 
     suspend fun saveNoteCover(requestBody: String): NoteCoverResponse? {
         val mediaType = "application/json".toMediaTypeOrNull()
@@ -336,6 +339,53 @@ class ApiClient {
                     responseBody?.let {
                         val emotionsResponse = moshi.adapter(EmotionsResponse::class.java).fromJson(it)
                         continuation.resume(emotionsResponse)
+                    } ?: run {
+                        continuation.resume(null)
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    continuation.resumeWithException(e)
+                    Log.e("ApiClient", "Request failed. Error: ${e.message}")
+                }
+            })
+
+            continuation.invokeOnCancellation {
+                Log.d("ApiClient", "Request cancelled")
+                client.dispatcher.cancelAll()
+            }
+        }
+    }
+    suspend fun postOnboarding(usage: List<String>): OnboardingResponse? {
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val jsonObject = JSONObject().apply {
+            put("usage", JSONArray(usage))
+        }
+        val requestBody = jsonObject.toString().toRequestBody(mediaType)
+        Log.d("ApiClient", "Request Body: ${jsonObject.toString()}")
+
+        val request = Request.Builder()
+            .url("https://dear-diary-capstone.onrender.com/onboarding")
+            .post(requestBody)
+            .build()
+
+        return suspendCancellableCoroutine { continuation ->
+            Log.d("ApiClient", "Before executing request. Request URL: ${request.url}")
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    if (!response.isSuccessful) {
+                        continuation.resume(null)
+                        Log.e("ApiClient", "Unsuccessful response. Code: ${response.code}, Message: ${response.message}")
+                        return
+                    }
+
+                    val responseBody = response.body?.string()
+                    Log.d("ApiClient", "Response Body: $responseBody")
+
+                    responseBody?.let {
+                        val onboardingResponse = onboardingAdapter.fromJson(it)
+                        continuation.resume(onboardingResponse)
                     } ?: run {
                         continuation.resume(null)
                     }

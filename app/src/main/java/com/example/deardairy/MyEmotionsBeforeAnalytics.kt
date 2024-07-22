@@ -90,43 +90,43 @@ fun MyEmotionsBeforeAnalyticsScreen(navController: NavHostController) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(selectedItem) {
-        if (selectedItem.isNotEmpty()) {
-            isLoading = true
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    // Вычисляем даты в зависимости от выбранного периода
-                    val (startDate, endDate) = getDateRange(selectedItem)
-                    Log.d("Emotions", "startDate: ${startDate}, endDate: ${endDate}")
-
-                    // Получаем эмоции за указанный диапазон дат
-                    val emotionsList = emotionDao.getEmotionsBetweenDates(startDate, endDate).map { it.name }
-                    Log.d("Emotions", "emotionsList: ${emotionsList}")
-
-                    val response = apiClient.putEmotions(emotionsList)
-                    Log.d("Emotions", "response: ${response}")
-
-                    withContext(Dispatchers.Main) {
-                        if (response != null) {
-                            navController.popBackStack("my_emotions_loading", inclusive = true)
-                            navController.navigate("my_emotions_analytics/${selectedItem}/${response.length}/${response.emotions.joinToString(",") { "${it.emotion}:${it.count}" }}")
-
+//    LaunchedEffect(selectedItem) {
+//        if (selectedItem.isNotEmpty()) {
+//            isLoading = true
+//            CoroutineScope(Dispatchers.IO).launch {
+//                try {
+//                    // Вычисляем даты в зависимости от выбранного периода
+//                    val (startDate, endDate) = getDateRange(selectedItem)
+//                    Log.d("Emotions", "startDate: ${startDate}, endDate: ${endDate}")
+//
+//                    // Получаем эмоции за указанный диапазон дат
+//                    val emotionsList = emotionDao.getEmotionsBetweenDates(startDate, endDate).map { it.name }
+//                    Log.d("Emotions", "emotionsList: ${emotionsList}")
+//
+//                    val response = apiClient.putEmotions(emotionsList)
+//                    Log.d("Emotions", "response: ${response}")
+//
+//                    withContext(Dispatchers.Main) {
+//                        if (response != null) {
+//                            navController.popBackStack("my_emotions_loading", inclusive = true)
 //                            navController.navigate("my_emotions_analytics/${selectedItem}/${response.length}/${response.emotions.joinToString(",") { "${it.emotion}:${it.count}" }}")
-                        } else {
-                            errorMessage = "Failed to get response"
-                        }
-                        isLoading = false
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        errorMessage = e.localizedMessage
-                        isLoading = false
-                    }
-                }
-            }
-        }
-    }
-
+//
+////                            navController.navigate("my_emotions_analytics/${selectedItem}/${response.length}/${response.emotions.joinToString(",") { "${it.emotion}:${it.count}" }}")
+//                        } else {
+//                            errorMessage = "Failed to get response"
+//                        }
+//                        isLoading = false
+//                    }
+//                } catch (e: Exception) {
+//                    withContext(Dispatchers.Main) {
+//                        errorMessage = e.localizedMessage
+//                        isLoading = false
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
     Column(
         modifier = Modifier
             .background(color = BackgroundColor)
@@ -184,7 +184,39 @@ fun MyEmotionsBeforeAnalyticsScreen(navController: NavHostController) {
                             type = ButtonType.PRIMARY,
                             text = "Next",
                             isActive = true,
-                            onClickAction = {navController.navigate("my_emotions_loading/$selectedItem")}
+                            onClickAction = {
+                                if (selectedItem.isNotEmpty()) {
+                                    isLoading = true
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        try {
+                                            val (startDate, endDate) = getDateRange(selectedItem)
+                                            Log.d("Emotions", "startDate: $startDate, endDate: $endDate")
+
+                                            val emotionsList = emotionDao.getEmotionsBetweenDates(startDate, endDate).map { it.name }
+                                            Log.d("Emotions", "emotionsList: $emotionsList")
+
+                                            val response = apiClient.putEmotions(emotionsList)
+                                            Log.d("Emotions", "response: $response")
+
+                                            withContext(Dispatchers.Main) {
+                                                if (response != null) {
+                                                    navController.popBackStack("my_emotions_loading", inclusive = true)
+                                                    navController.navigate("my_emotions_analytics/${selectedItem}/${response.length}/${response.emotions.joinToString(",") { "${it.emotion}:${it.count}" }}")
+                                                } else {
+                                                    errorMessage = "Failed to get response"
+                                                }
+                                                isLoading = false
+                                            }
+                                        } catch (e: Exception) {
+                                            withContext(Dispatchers.Main) {
+                                                errorMessage = e.localizedMessage
+                                                isLoading = false
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
                         )
                     )
                 }

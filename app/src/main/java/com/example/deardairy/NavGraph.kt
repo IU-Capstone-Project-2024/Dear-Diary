@@ -8,9 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.deardairy.network.EmotionCount
+import com.example.deardairy.util.PreferencesUtil
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -18,13 +18,16 @@ fun NavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
+    val context = navController.context
+
     NavHost(
         navController = navController,
         startDestination = "loading_screen",
         modifier = modifier
     ) {
         composable("loading_screen") {
-            LoadingScreen(onScreenTap = {navController.navigate("goals_screen") })
+            LoadingScreen(navController = navController, onScreenTap = {
+            })
         }
         composable("goals_screen") {
             GoalsScreen(navController = navController)

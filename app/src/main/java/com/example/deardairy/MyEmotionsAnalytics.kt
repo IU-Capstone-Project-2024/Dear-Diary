@@ -52,7 +52,7 @@ fun BlueEmotionContainer(emotionCount: EmotionCount) {
                 fontFamily = playfairDisplayFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = DarkBlueColor
+                color = BackgroundColor
             )
         )
         Text(
@@ -61,7 +61,7 @@ fun BlueEmotionContainer(emotionCount: EmotionCount) {
                 fontFamily = playfairDisplayFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = DarkBlueColor
+                color = BackgroundColor
             )
         )
     }

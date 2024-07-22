@@ -179,31 +179,31 @@ fun NewNoteScreen(navController: NavHostController) {
             .fillMaxSize()
     ) {
 
-    Column(modifier = Modifier
-        .background(color = BackgroundColor)
-        .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
-    ) {
-        TopBar(title = "New Note", showLeftButton = true, navController = navController, onMiniButtonClick = {overlayVisible = true})
+        Column(modifier = Modifier
+            .background(color = BackgroundColor)
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
+        ) {
+            TopBar(title = "New Note", showLeftButton = true, navController = navController, onMiniButtonClick = {overlayVisible = true})
 
 
-        PrimaryStyledContainer {
-            Column(verticalArrangement = Arrangement.SpaceBetween){
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(color = BlueContainerColor, shape = RoundedCornerShape(12.dp))
-                        .padding(16.dp)
-                ) {
-                    BasicText(text = "Dear Diary,", style = TextStyle(
-                        fontFamily = playfairDisplayFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 15.sp,
-                        color = DarkBlueColor
-                    ), modifier = Modifier
-                        .padding(bottom = 12.dp)
-                        .width(250.dp))
+            PrimaryStyledContainer {
+                Column(verticalArrangement = Arrangement.SpaceBetween){
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .background(color = BlueContainerColor, shape = RoundedCornerShape(12.dp))
+                            .padding(16.dp)
+                    ) {
+                        BasicText(text = "Dear Diary,", style = TextStyle(
+                            fontFamily = playfairDisplayFontFamily,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 15.sp,
+                            color = DarkBlueColor
+                        ), modifier = Modifier
+                            .padding(bottom = 12.dp)
+                            .width(250.dp))
 
                         LazyColumn(
                             modifier = Modifier
@@ -220,87 +220,87 @@ fun NewNoteScreen(navController: NavHostController) {
                             }
                         }
 
-                    BasicTextField(
-                        value = inputValue,
-                        onValueChange = { newInputValue ->
-                            inputValue = newInputValue
-                            helpButtonEnabled = newInputValue.isNotEmpty()
-                        },
-                        textStyle = TextStyle(
-                            fontFamily = playfairDisplayFontFamily,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 15.sp,
-                            color = DarkBlueColor
-                        ),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
+                        BasicTextField(
+                            value = inputValue,
+                            onValueChange = { newInputValue ->
+                                inputValue = newInputValue
+                                helpButtonEnabled = newInputValue.isNotEmpty()
+                            },
+                            textStyle = TextStyle(
+                                fontFamily = playfairDisplayFontFamily,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 15.sp,
+                                color = DarkBlueColor
+                            ),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .weight(1f)
 //                            .height(IntrinsicSize.Min)
-                            .padding(top = 24.dp, end = 32.dp),
-                        interactionSource = remember { MutableInteractionSource() },
-                        enabled = isInputEnabled
-                    )
-                }
+                                .padding(top = 24.dp, end = 32.dp),
+                            interactionSource = remember { MutableInteractionSource() },
+                            enabled = isInputEnabled
+                        )
+                    }
 
-                Spacer(modifier = Modifier.height(17.dp))
-                CustomButton(
-                    buttonState = ButtonState(
-                        type = ButtonType.PRIMARY,
-                        text = "Save my note",
-                        isActive = true,
-                        onClickAction = {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                try {
-                                    // Добавляем сообщение пользователя перед сохранением
-                                    val initialNote = Message(agent = "user", text = inputValue)
-                                    conversation.add(initialNote)
-                                    inputValue = ""
+                    Spacer(modifier = Modifier.height(17.dp))
+                    CustomButton(
+                        buttonState = ButtonState(
+                            type = ButtonType.PRIMARY,
+                            text = "Save my note",
+                            isActive = true,
+                            onClickAction = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    try {
+                                        // Добавляем сообщение пользователя перед сохранением
+                                        val initialNote = Message(agent = "user", text = inputValue)
+                                        conversation.add(initialNote)
+                                        inputValue = ""
 
-                                    val noteCoverResponse = apiClient.saveNoteCover("")
-                                    val coverId = noteCoverResponse?.imageId ?: ""
-                                    val coverUrl = noteCoverResponse?.imageUrl ?: ""
-                                    Log.d("NewNote", "coverId: ${coverId}")
+                                        val noteCoverResponse = apiClient.saveNoteCover("")
+                                        val coverId = noteCoverResponse?.imageId ?: ""
+                                        val coverUrl = noteCoverResponse?.imageUrl ?: ""
+                                        Log.d("NewNote", "coverId: ${coverId}")
 
-                                    val conversationMapList =
-                                        conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
-                                    Log.d("NewNote", "conversationMapList: ${conversationMapList}")
-                                    val noteTitleResponse = apiClient.getNoteTitle(conversationMapList)
-                                    val noteTitle = noteTitleResponse?.title ?: "New Note"
-                                    Log.d("NewNote", "note Title: ${noteTitle}")
+                                        val conversationMapList =
+                                            conversation.map { mapOf("agent" to it.agent, "text" to it.text) }
+                                        Log.d("NewNote", "conversationMapList: ${conversationMapList}")
+                                        val noteTitleResponse = apiClient.getNoteTitle(conversationMapList)
+                                        val noteTitle = noteTitleResponse?.title ?: "New Note"
+                                        Log.d("NewNote", "note Title: ${noteTitle}")
 
-                                    val newNote = Note(
-                                        name = noteTitle,  // Your logic for the note name
-                                        text = conversationMapList.toString(),
-                                        date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
-                                        coverId = coverId,
-                                        coverUrl = coverUrl
-                                    )
+                                        val newNote = Note(
+                                            name = noteTitle,  // Your logic for the note name
+                                            text = conversationMapList.toString(),
+                                            date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
+                                            coverId = coverId,
+                                            coverUrl = coverUrl
+                                        )
 
-                                    val noteDatabase = NoteDatabase.getDatabase(context)
-                                    Log.d("NewNote", "before insert new note")
-                                    noteDatabase.noteDao().insert(newNote)
-                                    Log.d("NewNote", "after insert new note")
-                                    val userDatabase = UserDatabase.getDatabase(context)
-                                    Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
-                                    var true_count = noteDatabase.noteDao().getNotesCount()
-                                    userDatabase.userDao().updateNotesCounter(true_count)
-                                    var count = userDatabase.userDao().getNotesCounter()
-                                    Log.d("NewNote", "Notes counter: $count")
+                                        val noteDatabase = NoteDatabase.getDatabase(context)
+                                        Log.d("NewNote", "before insert new note")
+                                        noteDatabase.noteDao().insert(newNote)
+                                        Log.d("NewNote", "after insert new note")
+                                        val userDatabase = UserDatabase.getDatabase(context)
+                                        Log.d("NewNote", "notes: ${noteDatabase.noteDao().getAllNotes()}")
+                                        var true_count = noteDatabase.noteDao().getNotesCount()
+                                        userDatabase.userDao().updateNotesCounter(true_count)
+                                        var count = userDatabase.userDao().getNotesCounter()
+                                        Log.d("NewNote", "Notes counter: $count")
 
-                                    withContext(Dispatchers.Main) {
-                                        navController.navigate("main_screen")
+                                        withContext(Dispatchers.Main) {
+                                            navController.navigate("main_screen")
+                                        }
+                                    }catch (e: Exception) {
+                                        // Handle exception
+                                        e.printStackTrace()
                                     }
-                                }catch (e: Exception) {
-                                    // Handle exception
-                                    e.printStackTrace()
                                 }
                             }
-                        }
+                        )
                     )
-                )
+                }
             }
         }
-    }
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -342,30 +342,30 @@ fun NewNoteScreen(navController: NavHostController) {
                     }
                 }
         ) {
-        Image(
-            painter = painterResource(id = R.drawable.help),
-            contentDescription = "Help Icon",
-            modifier = Modifier
-                .height(136.dp),
-            contentScale = ContentScale.Fit ,
-            colorFilter = if (!helpButtonEnabled) ColorFilter.tint(helpButtonColor) else null
-        )
+            Image(
+                painter = painterResource(id = R.drawable.help),
+                contentDescription = "Help Icon",
+                modifier = Modifier
+                    .height(136.dp),
+                contentScale = ContentScale.Fit ,
+                colorFilter = if (!helpButtonEnabled) ColorFilter.tint(helpButtonColor) else null
+            )
 
         }
-    if (overlayVisible) {
+        if (overlayVisible) {
             Overlay(
                 title = "Your notes will not be saved.\n" +
                         "Are you sure?",
                 onConfirm = {
-                            navController.navigate("main_screen")
-                            overlayVisible = false
+                    navController.navigate("main_screen")
+                    overlayVisible = false
                 },
                 onCancel = {
                     overlayVisible = false // Hide overlay on cancel
                 }
             )
         }
-}}
+    }}
 
 
 

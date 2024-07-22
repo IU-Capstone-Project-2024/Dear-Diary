@@ -34,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -42,6 +43,8 @@ import androidx.room.TypeConverter
 import com.example.deardairy.database.initializeUser
 import com.example.deardairy.database.NoteDatabase
 import com.example.deardairy.database.UserDatabase
+import com.example.deardairy.network.ApiClient
+import com.example.deardairy.util.PreferencesUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -53,6 +56,7 @@ fun GoalsScreen(navController: NavHostController) {
     val selectedChoices = remember { mutableStateListOf<String>() }
     var isNextButtonEnabled by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
 
     fun updateSelectedChoices(choice: String) {
@@ -130,22 +134,24 @@ fun GoalsScreen(navController: NavHostController) {
                             text = "Next",
                             isActive = true,
                             onClickAction = {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    val userDatabase = UserDatabase.getDatabase(context)
-                                    val userDao = userDatabase.userDao()
+                                navController.navigate("onboarding1")
+                                PreferencesUtil.setOnboardingCompleted(context, true)
+                                PreferencesUtil.setGoalsSelected(context, true)
+                                Log.d("GoalsScreen", "OnboardingCompleted ${PreferencesUtil.isOnboardingCompleted(context)}, GoalsSelected ${PreferencesUtil.isGoalsSelected(context)}")
 
-                                    val user = userDao.getUserById(0)
-                                    Log.d("GoalsScreen", "Before update: $user")
+                                coroutineScope.launch {
+                                        try {
+                                            Log.d("GoalsScreen", "no response yet")
+                                            val onboardingResponse = ApiClient().postOnboarding(selectedChoices)
+                                            Log.d("GoalsScreen", "Onboarding Response: $onboardingResponse")
 
-                                    userDao.updateGoals(selectedChoices.joinToString(","))
-
-                                    val updatedUser = userDao.getUserById(0)
-                                    Log.d("GoalsScreen", "After update:  $updatedUser")
-
-                                    withContext(Dispatchers.Main) {
-                                        Log.d("GoalsScreen", "before nav to main screen")
-                                        navController.navigate("onboarding1")
-                                    }
+//                                            withContext(Dispatchers.Main) {
+//
+//                                                Log.d("GoalsScreen", "OnboardingCompleted ${PreferencesUtil.isOnboardingCompleted(context)}, GoalsSelected ${PreferencesUtil.isGoalsSelected(context)}")
+//                                            }
+                                        } catch (e: Exception) {
+                                            Log.e("GoalsScreen", "Error: ${e.localizedMessage}")
+                                        }
                                 }
                             }
                         )
