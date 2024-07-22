@@ -1,5 +1,6 @@
 import os
 import aiohttp
+from openai.lib.azure import AzureOpenAI
 
 from utils import last_user_text_from_note, note_records_to_dialog
 from data_models import NoteRecord
@@ -102,6 +103,9 @@ async def process_note_template(context_prompt: str, format_prompt: str, note: l
     if "\nuser:" in response:
         response = response.split("\nuser:")[0]
 
+    if "\n\n" in response:
+        response = response.split("\n\n")[0]
+
     return response
 
 
@@ -176,6 +180,7 @@ async def generate_emotion(text):
         "inputs": f"""
         **Instructions:**
         Detect the emotion that the person is feeling based on their note.
+        The emotion should be complex (like apprehensive, empowered or mellow)
 
         **Desired format:**
         "<only the emotion in one or two words>"
@@ -215,4 +220,9 @@ async def generate_recommendation_for_emotion(emotion):
         },
     }
 
-    return await request_text_generation(payload)
+    response = await request_text_generation(payload)
+
+    if "\n\n" in response:
+        response = response.split("\n\n")[0]
+
+    return response
