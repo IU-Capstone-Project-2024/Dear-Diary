@@ -1,22 +1,6 @@
-import os
-import aiohttp
-
-from backend.utils import last_user_text_from_note, note_records_to_dialog
 from backend.data_models import NoteRecord
-
-API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
-headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_KEY')}"}
-
-
-async def request_text_generation(payload):
-    payload["inputs"] = payload["inputs"].replace("\t", "").replace("  ", "")
-    print(payload["inputs"])
-
-    async with aiohttp.ClientSession() as session:
-        async with session.post(API_URL, headers=headers, json=payload) as response:
-            response_data = await response.json()
-
-    return response_data[0]["generated_text"]
+from backend.llm.api import request_text_generation
+from backend.utils import note_records_to_dialog, last_user_text_from_note
 
 
 async def generate_response_to_note(note: list[NoteRecord]):
@@ -40,16 +24,16 @@ async def generate_response_to_note(note: list[NoteRecord]):
             best_strategy_index = i
 
     if best_strategy_index == 0:
-        return await respond_questions(note, last_user_text)
+        return await respond_questions(note)
     elif best_strategy_index == 1:
-        return await respond_support(note, last_user_text)
+        return await respond_support(note)
     elif best_strategy_index == 2:
-        return await respond_advice(note, last_user_text)
+        return await respond_advice(note)
     elif best_strategy_index == 3:
-        return await respond_empathy(note, last_user_text)
+        return await respond_empathy(note)
 
     # Fallback to questions if the strategy is not recognized
-    return await respond_questions(note, last_user_text)
+    return await respond_questions(note)
 
 
 async def pick_response_strategy(last_user_text):
@@ -61,7 +45,7 @@ async def pick_response_strategy(last_user_text):
             - "Support" when user is feeling down and needs reassurance.
             - "Advice" when user is looking for guidance on how to handle a situation.
             - "Empathy" when user is feeling overwhelmed and needs to feel understood.
-            
+
             **Input note:** "{last_user_text}"
 
             **Desired format:**
@@ -109,7 +93,7 @@ async def process_note_template(context_prompt: str, note: list[NoteRecord]):
     return response
 
 
-async def respond_questions(note: list[NoteRecord], last_user_text: str):
+async def respond_questions(note: list[NoteRecord]):
     return await process_note_template(
         f"""You are helpful reflection assistant.
         Your goal is to respond with a list of 2-3 questions that can help the person process emotions.
@@ -119,7 +103,7 @@ async def respond_questions(note: list[NoteRecord], last_user_text: str):
         note)
 
 
-async def respond_support(note: list[NoteRecord], last_user_text: str):
+async def respond_support(note: list[NoteRecord]):
     return await process_note_template(
         f"""Your goal is to respond with a supportive message to help the person feel better.
         Reference specific details about the note and context in your message.
@@ -127,7 +111,7 @@ async def respond_support(note: list[NoteRecord], last_user_text: str):
         note)
 
 
-async def respond_advice(note: list[NoteRecord], last_user_text: str):
+async def respond_advice(note: list[NoteRecord]):
     return await process_note_template(
         f"""You are a professional helpful advice assistant.
         Your goal is to respond with a message that provides prescience advice and guidance.
@@ -136,7 +120,7 @@ async def respond_advice(note: list[NoteRecord], last_user_text: str):
         note)
 
 
-async def respond_empathy(note: list[NoteRecord], last_user_text: str):
+async def respond_empathy(note: list[NoteRecord]):
     return await process_note_template(
         f"""You are a helpful empathy assistant.
         Your goal is to respond with an empathetic message that shows understanding and support.
@@ -159,63 +143,10 @@ async def generate_note_title(note: list[NoteRecord]):
 
         **Summary:**\n""",
         "parameters": {
-            "temperature": 0.7,  # Lower temperature for more deterministic output
+            "temperature": 0.7,
             "return_full_text": False,
-            "max_new_tokens": 4,  # Adjusted to ensure brevity
+            "max_new_tokens": 4,
         },
     }
 
     return await request_text_generation(payload)
-
-
-async def generate_emotion(text):
-    payload = {
-        "inputs": f"""
-        **Instructions:**
-        Detect the emotion that the person is feeling based on their note.
-        The emotion should be complex (like apprehensive, empowered or mellow)
-
-        **Desired format:**
-        "<only the emotion in one or two words>"
-
-        **Input note:** "{text}"
-
-        **Output in desired format:** \n""",
-        "parameters": {
-            "temperature": 1.0,
-            "return_full_text": False,
-            "max_new_tokens": 6,
-        },
-    }
-
-    return await request_text_generation(payload)
-
-
-async def generate_recommendation_for_emotion(emotion):
-    payload = {
-        "inputs": f"""
-        **Instructions:**
-        Generate a recommendation for the person based on their emotion.
-        Describe how this emotion can be helpful to a person, how to navigate being in it.
-        Avoid neglecting the emotion or providing advice on how to change it.
-        Be gentle and kind.
-
-        **Desired format:**
-        <recommendation, 4-6 sentences>
-
-        **Input emotion:**
-        {emotion}
-
-        **Output in desired format:** \n""",
-        "parameters": {
-            "temperature": 0.8,
-            "return_full_text": False,
-        },
-    }
-
-    response = await request_text_generation(payload)
-
-    if "\n\n" in response:
-        response = response.split("\n\n")[0]
-
-    return response

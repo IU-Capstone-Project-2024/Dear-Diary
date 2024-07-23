@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from backend.data_models import EmotionsReportRecord
-from backend.llm import generate_emotion, generate_recommendation_for_emotion
+from backend.llm.emotion import generate_emotion, generate_recommendation_for_emotion
 from backend.utils import sanityze_text_no_special_chars
 
 emotionRouter = APIRouter()

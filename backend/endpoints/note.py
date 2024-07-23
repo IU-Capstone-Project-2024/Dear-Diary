@@ -5,7 +5,7 @@ from firebase_admin import storage
 from pydantic import BaseModel
 
 from backend.data_models import NoteRecord
-from backend.llm import generate_response_to_note, generate_note_title
+from backend.llm.note import generate_response_to_note, generate_note_title
 from backend.utils import sanityze_text_no_special_chars
 
 noteRouter = APIRouter()
